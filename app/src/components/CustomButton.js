@@ -21,7 +21,6 @@ const CustomButton = ({
       style={({pressed}) => [
         styles.container,
         containerStyle,
-        {backgroundColor: bgColor},
         mode && {
           backgroundColor: 'transparent',
           borderColor: borderColor,

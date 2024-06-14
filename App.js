@@ -1,37 +1,16 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
-import TxtInput from './app/src/components/TxtInput';
-import {COLORS} from './app/config/COLORS';
-import CustomButton from './app/src/components/CustomButton';
+import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import AuthStack from './app/src/Screens/authStack/authStack'
 
-export default function App() {
-  const [showPassword, setShowPassword] = useState(false);
-  const handleOnFOcus = () => {
-    setFocused(true);
-  };
-  const handleOnBlur = () => {
-    setFocused(false);
-  };
-
-
+const App = () => {
   return (
-    <View style={{padding: 10, flex: 1, backgroundColor: COLORS.primary2}}>
-      {/* <Text style={{fontFamily: 'Lexend'}} >App</Text> */}
-      <TxtInput
-        placeholder={'Search'}
-        onFocus={handleOnFOcus}
-        onBlur={handleOnBlur}
-        // isfocused={isfocused}
-        rightIcon={'search'}
-        rightIconSize={17}
-        leftIcon={'eye'}
-        leftIconColor={COLORS.lightTxtColor}
-        leftIconSize={20}
-        secureTextEntry={true}
-      />
-      <CustomButton icon={'plus'} bgColor={COLORS.primary1} />
-    </View>
-  );
+    <NavigationContainer>
+      <AuthStack/>
+    </NavigationContainer>
+  )
 }
 
-const styles = StyleSheet.create({});
+export default App
+
+const styles = StyleSheet.create({})
