@@ -1,14 +1,28 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import Welcome from './Screens/Welcome'
+import SignIn from './Screens/SignIn'
+import ReviewNaccept from './Screens/ReviewNaccept'
+import SignUp from './Screens/SignUp'
+import ForgetPassword from './Screens/ForgetPassword'
 
-const authStack = () => {
+const Stack = createNativeStackNavigator()
+
+const AuthStack = () => {
   return (
-    <View>
-      <Text>authStack</Text>
-    </View>
+    <Stack.Navigator initialRouteName='welcome' screenOptions={{
+      headerShown: false
+    }} >
+      <Stack.Screen name="welcome" component={Welcome} />
+      <Stack.Screen name="Review" component={ReviewNaccept} />
+      <Stack.Screen name="signin" component={SignIn} />
+      <Stack.Screen name="signup" component={SignUp} />
+      <Stack.Screen name="forgetPass" component={ForgetPassword} />
+    </Stack.Navigator>
   )
 }
 
-export default authStack
+export default AuthStack
 
 const styles = StyleSheet.create({})
