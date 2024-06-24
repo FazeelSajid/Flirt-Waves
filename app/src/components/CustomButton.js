@@ -28,7 +28,11 @@ const CustomButton = ({
         },
         pressed && {opacity: 0.5, borderRadius: 2},
       ]}>
-      {icon ? <Icon name={icon} size={iconSize} color={iconColor} /> : <Text style={[textStyle, txtColor]}>{text}</Text>}
+      {icon ? (
+        <Icon name={icon} size={iconSize} color={iconColor} />
+      ) : (
+        <Text style={[textStyle, txtColor]}>{text}</Text>
+      )}
     </Pressable>
   );
 };

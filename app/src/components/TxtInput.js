@@ -8,13 +8,14 @@ import {
 import React from 'react';
 // import COLORS from '../../Config/Colors';
 // import { Icon } from 'react-native-paper';
-import { useState } from 'react';
+import {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {COLORS} from '../../config/COLORS';
+import {fonts} from '../../config/Fonts';
 
 const TxtInput = ({
   style,
@@ -30,38 +31,45 @@ const TxtInput = ({
   leftIcon,
   leftIconSize,
   leftIconColor,
-  secureTextEntry
+  secureTextEntry,
+  error,
 }) => {
-
   const [isPasswordVisible, setIsPasswordVisible] = useState(!secureTextEntry);
 
   const [isfocused, setFocused] = useState(false);
 
-
   const togglePasswordVisibility = () => {
-      setIsPasswordVisible(!isPasswordVisible);
+    setIsPasswordVisible(!isPasswordVisible);
   };
   return (
-    <View style={[styles.searchContainer, style, isfocused && styles.focused]}>
-      <Icon name={rightIcon} size={rightIconSize} color={rightIconColor} />
-      <TextInput
-        placeholder={placeholder}
-        style={styles.searchInput}
-        selectionColor={COLORS.primary1}
-        keyboardType={keyboardType}
-        onFocus={()=> setFocused(true)}
-        onChangeText={onChangeText}
-        value={value}
-        onBlur={onBlur}
-        secureTextEntry={secureTextEntry && !isPasswordVisible}
-        multiline={multiline}
-      />
-       {secureTextEntry && (
-                <TouchableOpacity onPress={togglePasswordVisibility} style={styles.icon}>
-                <Icon name={leftIcon} size={leftIconSize} color={leftIconColor} />
-              </TouchableOpacity>
-            )}
-      
+    <View style={style}>
+      <View style={[styles.searchContainer, isfocused && styles.focused]}>
+        <Icon name={rightIcon} size={rightIconSize} color={rightIconColor} />
+        <TextInput
+          placeholder={placeholder}
+          style={styles.searchInput}
+          selectionColor={COLORS.primary1}
+          keyboardType={keyboardType}
+          onFocus={() => setFocused(true)}
+          onChangeText={onChangeText}
+          value={value}
+          onBlur={() => setFocused(false)}
+          secureTextEntry={secureTextEntry && !isPasswordVisible}
+          multiline={multiline}
+        />
+        {secureTextEntry && (
+          <TouchableOpacity
+            onPress={togglePasswordVisibility}
+            style={styles.icon}>
+            <Icon
+              name={isPasswordVisible ? 'eye' : 'eye-slash'}
+              size={20}
+              color={COLORS.lightTxtColor}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
+      {error && error}
     </View>
   );
 };
@@ -73,13 +81,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.white,
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    marginBottom: 10,
+    borderRadius: wp('2.5%'),
+    paddingHorizontal: wp('3%'),
+    // marginBottom: wp('3%'),
   },
   searchInput: {
     // color: COLORS.black,
-    fontFamily: 'Lexend',
+    fontFamily: fonts.Regular,
     color: COLORS.lightTxtColor,
     marginLeft: 5,
     flex: 1,
@@ -87,8 +95,9 @@ const styles = StyleSheet.create({
   focused: {
     borderColor: COLORS.primary1,
     borderWidth: 1,
+    // borderBlockEndColor: COLORS.primary1,
   },
   icon: {
     marginRight: 10,
-},
+  },
 });

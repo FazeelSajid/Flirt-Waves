@@ -47,6 +47,7 @@ const VerificationInput = ({ numberOfInputs = 4, onChange, containerStyle, input
                         onFocus={()=> setFocused(true)}
                         onBlur={()=> setFocused(false)}
                         onKeyPress={({nativeEvent: {key}}) => handleKey(key, index)}
+                        selectionColor={COLORS.primary1}
                         />
                     )
                 })
@@ -66,12 +67,14 @@ const styles = StyleSheet.create({
     width: wp('12%'),
     height: hp('6%'),
     borderWidth: 1,
-    borderColor: '#DEDFE2',
+    borderColor: COLORS.primary2,
     textAlign: 'center',
-    fontSize: 18,
-    margin: 5,
-    borderRadius: 5,
-    backgroundColor: '#fff',
+    fontSize: wp('5.5%'),
+    borderRadius: wp('3%'),
+    backgroundColor: COLORS.white,
+    color: COLORS.blackTxtColor,
+    
+    
   },
   focused: {
     borderColor: COLORS.primary1,
