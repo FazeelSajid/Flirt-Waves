@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, KeyboardAvoidingView, ScrollView} from 'react-native';
 import React from 'react';
 import Logos from '../../../components/subComp/Logos';
 import svg from '../../../assets/svgs/Svg';
@@ -32,7 +32,9 @@ const validationSchema = Yup.object().shape({
 
 const SignUp = ({navigation}) => {
   return (
-    <View style={styles.container}>
+    // <KeyboardAvoidingView style={{flex: 1}} >
+
+    <ScrollView style={styles.container}>
       <CustomHeader
         left={'chevron-left'}
         iconSize={wp('5%')}
@@ -84,7 +86,7 @@ const SignUp = ({navigation}) => {
                 )
               }
               secureTextEntry={true}
-            />
+              />
 
             <TxtInput
               placeholder={'Confirm Password'}
@@ -109,7 +111,7 @@ const SignUp = ({navigation}) => {
               text={'Continue'}
               textStyle={[styles.btnText, {color: COLORS.blackTxtColor}]}
               onPress={handleSubmit}
-            />
+              />
           </View>
         )}
       </Formik>
@@ -127,10 +129,10 @@ const SignUp = ({navigation}) => {
       />
       {Platform.OS === 'ios' && (
         <ContinueWith
-          text={'Continue with Apple'}
-          // onPress={handlePress}
-          icon={<Apple width={wp('5%')} height={hp('5%')} />}
-          containerStyle={styles.continueWith}
+        text={'Continue with Apple'}
+        // onPress={handlePress}
+        icon={<Apple width={wp('5%')} height={hp('5%')} />}
+        containerStyle={styles.continueWith}
         />
       )}
       <View style={styles.alreadyContainer}>
@@ -141,7 +143,8 @@ const SignUp = ({navigation}) => {
           onPress={() => navigation.navigate('signin')}
         />
       </View>
-    </View>
+    </ScrollView>
+// </KeyboardAvoidingView>
   );
 };
 
@@ -172,7 +175,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   btn: {
-    paddingVertical: wp('4%'),
+    paddingVertical: wp('3%'),
     borderRadius: wp('3%'),
     marginTop: wp('8%'),
   },

@@ -32,6 +32,8 @@ const TxtInput = ({
   leftIconSize,
   leftIconColor,
   secureTextEntry,
+  onFocus,
+  onPress,
   error,
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(!secureTextEntry);
@@ -50,19 +52,20 @@ const TxtInput = ({
           style={styles.searchInput}
           selectionColor={COLORS.primary1}
           keyboardType={keyboardType}
-          onFocus={() => setFocused(true)}
+          onFocus={() => onFocus ? onFocus() : setFocused(true)}
           onChangeText={onChangeText}
           value={value}
           onBlur={() => setFocused(false)}
           secureTextEntry={secureTextEntry && !isPasswordVisible}
           multiline={multiline}
+          onPress={onPress}
         />
         {secureTextEntry && (
           <TouchableOpacity
             onPress={togglePasswordVisibility}
             style={styles.icon}>
             <Icon
-              name={isPasswordVisible ? 'eye' : 'eye-slash'}
+              name={isPasswordVisible ? 'eye-slash' : 'eye'}
               size={20}
               color={COLORS.lightTxtColor}
             />

@@ -22,8 +22,17 @@ export default PopUp
 
 const styles = StyleSheet.create({
     popUp: {
+      position: 'absolute',
+      top: hp('10%'),
+      left: wp('5%'),
+      right: wp('5%'),
+      // backgroundColor: '#d4edda',
+      // borderRadius: wp('2%'),
+      // alignItems: 'center',
+      zIndex: 1,
         backgroundColor: COLORS.white,
         flexDirection: 'row',
+        // flex:1,
         borderRadius: wp('2.5%'),
         overflow: 'hidden',
         elevation: 10
@@ -34,7 +43,7 @@ const styles = StyleSheet.create({
       },
       innerContainer:{
         paddingHorizontal: wp('3%'),
-        paddingVertical: hp('0.8%'),
+        // paddingVertical: hp('4%'),
       },
       heading: {
         fontFamily: 'Lexend',
