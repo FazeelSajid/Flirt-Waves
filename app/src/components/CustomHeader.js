@@ -19,7 +19,7 @@ const CustomHeader = ({
   headingColor,
   leftIconColor,
   rightIconColor,
-  iconColor,
+  
 }) => {
   return (
     <View style={styles.container}>
