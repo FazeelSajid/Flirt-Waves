@@ -1,4 +1,4 @@
-import {LogBox, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View, Image, Modal, Button} from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {COLORS} from '../../config/COLORS';
@@ -6,22 +6,54 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {fonts} from '../../config/Fonts';
 
-const Gender = ({gender, icon, isSelected, setSelectedGender}) => {
+const Gender = ({gender, icon, isSelected, onPress, withOutbgIcon, containerStyle, iconSize, photo}) => {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  // console.log(isSelected);
+  const handleImagePress = (image) => {
+    setSelectedImage(image);
+    setIsModalVisible(true);
+  };
 
-  
-  console.log(isSelected);
   return (
     <TouchableOpacity
       activeOpacity={0.7}
-      style={[styles.container, isSelected && {borderColor: COLORS.primary1, borderWidth: 1}]}
+      style={[
+        styles.container,
+        containerStyle,
+        isSelected && {borderColor: COLORS.primary1, borderWidth: 1},
+      ]}
       focusable={true}
-      onPress={() => setSelectedGender(gender)}
-      >
-      <View style={[styles.innerContainer, isSelected ? {backgroundColor: COLORS.primary1} : {backgroundColor: COLORS.lightGrayColor}]} >
-        <Icon name={icon} size={30} color={isSelected? COLORS.white : COLORS.darkGrayColor} />
-      </View>
-      <Text style={styles.gender}>{gender}</Text>
+      onPress={() => (photo ?handleImagePress(photo) : onPress(gender) )}>
+      {gender && (
+        <View
+          style={[
+            styles.innerContainer,
+            isSelected
+              ? {backgroundColor: COLORS.primary1}
+              : {backgroundColor: COLORS.lightGrayColor},
+          ]}>
+          <Icon
+            name={icon}
+            size={30}
+            color={isSelected ? COLORS.white : COLORS.darkGrayColor}
+          />
+        </View>
+      )}
+      {photo ? 
+            <Image source={{ uri: photo }} style={styles.photo}  />
+          : <Icon name={withOutbgIcon} size={iconSize} color={COLORS.primary1} /> }
+
+          <Modal visible={isModalVisible} transparent={true}>
+        <View style={styles.modalContainer}>
+          <Image source={{ uri: selectedImage }} style={styles.fullScreenImage} />
+          <Button title="Close" onPress={() => setIsModalVisible(false)} />
+        </View>
+      </Modal>
+
+     {gender && <Text style={styles.gender}>{gender}</Text> } 
     </TouchableOpacity>
   );
 };
@@ -30,16 +62,16 @@ export default Gender;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor:  COLORS.white,
-    // justifyContent: 'center',
+    flex: 1,
+    // backgroundColor: COLORS.white,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: hp('2.5%'),
-    paddingVertical: hp('3.2%'),
-    paddingHorizontal: wp('13%'),
+    // marginTop: hp('2.5%'),
+    // paddingVertical: wp('10%'),
+    // paddingHorizontal: wp('10%'),
     borderRadius: wp('3%'),
   },
   innerContainer: {
-    
     paddingVertical: wp('3%'),
     paddingHorizontal: wp('3.5%'),
     // height: hp('2%') ,
@@ -47,6 +79,21 @@ const styles = StyleSheet.create({
   },
   gender: {
     marginTop: wp('5%'),
-    fontFamily: 'Lexend',
+    fontFamily: fonts.Regular,
+  },
+  fullScreenImage: {
+    width: '90%',
+    height: '70%',
+  },
+  photo: {
+    width: '100%',
+    height: '100%',
+    margin: 5,
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
