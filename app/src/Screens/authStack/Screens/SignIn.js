@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import React from 'react';
 import Logos from '../../../components/subComp/Logos';
 import svg from '../../../assets/svgs/Svg';
@@ -29,7 +29,7 @@ const validationSchema = Yup.object().shape({
 
 const SignIn = ({navigation}) => {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <CustomHeader
         left={'chevron-left'}
         iconSize={wp('6%')}
@@ -39,11 +39,11 @@ const SignIn = ({navigation}) => {
       <Logos />
       <Text style={styles.heading}>Sign In</Text>
       <Formik
-        initialValues={{email: '', password: '', confirmPassword: ''}}
+        initialValues={{email: 'fazeel@gmail.com', password: 'fazeel'}}
         validationSchema={validationSchema}
         onSubmit={values => {
           console.log(values);
-          navigation.navigate('tellUs');
+          navigation.navigate('QA');
         }}>
         {({
           handleChange,
@@ -132,7 +132,7 @@ const SignIn = ({navigation}) => {
           onPress={() => navigation.navigate('signup')}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

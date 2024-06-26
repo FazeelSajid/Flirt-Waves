@@ -3,6 +3,7 @@ import React from 'react'
 import Modal from 'react-native-modal';
 import { COLORS } from '../../config/COLORS';
 import CustomButton from './CustomButton';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
 
 
 const BottomSheet = ({isVisible, onClose, children }) => {
@@ -15,7 +16,7 @@ const BottomSheet = ({isVisible, onClose, children }) => {
     swipeDirection="down"
   >
     <View style={styles.container}>
-     <CustomButton icon={'close'} iconSize={20} iconColor={COLORS.blackTxtColor} onPress={onClose} containerStyle={{alignSelf: 'flex-end'}} />
+      
      {children}
     </View>
   </Modal>
@@ -31,11 +32,10 @@ const styles = StyleSheet.create({
       },
       container: {
         backgroundColor: COLORS.white,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        padding: 20,
+        borderTopLeftRadius: widthPercentageToDP('6%'),
+        borderTopRightRadius:  widthPercentageToDP('6%'),
+        paddingTop: widthPercentageToDP('3%'),
+        paddingHorizontal: widthPercentageToDP('4%'),
       },
-      closeButton: {
-        alignSelf: 'flex-end',
-      },
+      
 })
