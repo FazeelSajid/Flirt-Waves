@@ -44,11 +44,11 @@ const SignUp = ({navigation}) => {
       <Logos />
       <Text style={styles.heading}>Sign Up</Text>
       <Formik
-        initialValues={{email: '', password: '', confirmPassword: ''}}
+        initialValues={{email: 'fazeel@gmail.com', password: 'fazeel', confirmPassword: 'fazeel'}}
         validationSchema={validationSchema}
         onSubmit={values => {
           console.log(values);
-          navigation.navigate('tellUs');
+          navigation.navigate('QA');
         }}>
         {({
           handleChange,
@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
   continueWith: {
     backgroundColor: COLORS.white,
     marginTop: wp('5%'),
+    paddingVertical: wp('4%'),
   },
   alreadyContainer: {
     marginTop: wp('8%'),

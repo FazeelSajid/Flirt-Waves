@@ -6,7 +6,6 @@ import SignIn from './Screens/SignIn'
 import ReviewNaccept from './Screens/ReviewNaccept'
 import SignUp from './Screens/SignUp'
 import ForgetPassword from './Screens/ForgetPassword'
-import Tellus from './Screens/Welcome/Tellus'
 import QA from './Screens/Welcome/QA'
 
 const Stack = createNativeStackNavigator()
@@ -21,7 +20,6 @@ const AuthStack = () => {
       <Stack.Screen name="signin" component={SignIn} />
       <Stack.Screen name="signup" component={SignUp} />
       <Stack.Screen name="forgetPass" component={ForgetPassword} />
-      <Stack.Screen name="tellUs" component={Tellus} />
       <Stack.Screen name="QA" component={QA} />
 
     </Stack.Navigator>

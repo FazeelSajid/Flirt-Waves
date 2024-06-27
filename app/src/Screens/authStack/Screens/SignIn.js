@@ -39,7 +39,7 @@ const SignIn = ({navigation}) => {
       <Logos />
       <Text style={styles.heading}>Sign In</Text>
       <Formik
-        initialValues={{email: 'fazeel@gmail.com', password: 'fazeel'}}
+        initialValues={{email: '', password: ''}}
         validationSchema={validationSchema}
         onSubmit={values => {
           console.log(values);
@@ -173,6 +173,8 @@ const styles = StyleSheet.create({
   continueWith: {
     backgroundColor: COLORS.white,
     marginTop: wp('5%'),
+    paddingVertical: wp('4%'),
+
   },
   alreadyContainer: {
     marginTop: wp('8%'),

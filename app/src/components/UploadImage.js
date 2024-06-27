@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const ExerciseHabbit = () => {
+const UploadImage = () => {
   return (
     <View>
-      <Text>ExerciseHabbit</Text>
+      <Text>UploadImage</Text>
     </View>
   )
 }
 
-export default ExerciseHabbit
+export default UploadImage
 
 const styles = StyleSheet.create({})

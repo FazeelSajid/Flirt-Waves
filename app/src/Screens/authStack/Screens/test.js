@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,24 +6,23 @@ import {
   ScrollView,
   TouchableOpacity,
   Button,
-  Image
+  Image,
 } from 'react-native';
-import {COLORS} from '../../../../../config/COLORS';
+import { COLORS } from '../../../../../config/COLORS';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import CustomHeader from '../../../../components/CustomHeader';
 import CustomButton from '../../../../components/CustomButton';
 import TxtInput from '../../../../components/TxtInput';
 import BottomSheet from '../../../../components/BottomSheet';
 import DatePicker from 'react-native-date-picker';
 import Gender from '../../../../components/Gender';
-import {fonts} from '../../../../../config/Fonts';
+import { fonts } from '../../../../../config/Fonts';
 import PhotoUpload from '../../../../components/PhotoUpload';
 import ContinueWith from '../../../../components/ContinueWith';
-
 
 const questions = [
   {
@@ -108,7 +107,7 @@ const questions = [
   },
 ];
 
-const QA = ({navigation}) => {
+const QA = ({ navigation }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [responses, setResponses] = useState({});
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -149,7 +148,7 @@ const QA = ({navigation}) => {
 
   // Handle input change
   const handleInputChange = (questionId, value) => {
-    setResponses({...responses, [questionId]: value});
+    setResponses({ ...responses, [questionId]: value });
   };
 
   const date = selectedDate.toLocaleDateString();
@@ -167,13 +166,14 @@ const QA = ({navigation}) => {
       <Text
         style={[
           styles.heading,
-          currentQuestion.type === 'choice' ||
-            ('photo' && {marginTop: hp('3%')}),
-        ]}>
+          currentQuestion.type === 'choice' || ('photo' && { marginTop: hp('3%') }),
+        ]}
+      >
         {currentQuestion.question}
       </Text>
       <ScrollView
-        style={currentQuestion.type === 'choice' ? {marginTop: hp('13%')} : ''}>
+        style={currentQuestion.type === 'choice' ? { marginTop: hp('13%') } : ''}
+      >
         {currentQuestion.type === 'multi' && (
           <>
             <TxtInput
@@ -247,7 +247,6 @@ const QA = ({navigation}) => {
                   paddingVertical: wp('5%'),
                   paddingHorizontal: wp('10%'),
                   backgroundColor: COLORS.white,
-
                 }}
               />
               <Gender
@@ -275,7 +274,7 @@ const QA = ({navigation}) => {
               containerStyle={[
                 styles.optionButton,
                 responses[currentQuestion.id] === option &&
-                  styles.selectedOptionButton,
+                styles.selectedOptionButton,
               ]}
               onPress={() => handleInputChange(currentQuestion.id, option)}
               text={option}
@@ -283,140 +282,124 @@ const QA = ({navigation}) => {
             />
           ))}
 
-        {/* /////////////////////////////////////////////// PHOTOS//////////////////////////////////////////////////////// */}
+        {/* PHOTOS */}
         {currentQuestion.type === 'photo' && (
           <View>
             <Text style={styles.photoDes}>
               Add minimum 1 photo to continue. One of these images should be a
               picture of yourself.
             </Text>
-            {/* <Button title="Upload Photo" onPress={toggleModal} /> */}
+
             <View
               style={{
                 flexDirection: 'row',
                 marginTop: wp('3%'),
                 height: hp('28%'),
                 padding: wp('2%'),
-              }}>
+              }}
+            >
               <View
                 style={{
                   flex: 1,
                   marginRight: wp('2%'),
-                }}>
-                <Gender
-                  iconSize={wp('14%')}
-                  withOutbgIcon={'image-sharp'}
-                  onPress={toggleModal}
-                  photo={photos[0] && photos[0]}
-                containerStyle={styles.photoContainer}
-
-                />
-              </View>
-              <View
-                style={{
-                  justifyContent: 'space-between',
-                  height: ' 100%',
-                  gap: wp('2%'),
-                  width: wp('27%'),
-
-                }}>
-                <Gender
-                  withOutbgIcon={'image-sharp'}
-                  iconSize={wp('8%')}
-                  onPress={toggleModal}
-                  photo={photos[1] && photos[1]}
-                containerStyle={styles.photoContainer}
-
-                />
-                <Gender
-                  withOutbgIcon={'image-sharp'}
-                  iconSize={wp('8%')}
-                  onPress={toggleModal}
-                  photo={photos[2] && photos[2]}
-                containerStyle={styles.photoContainer}
-
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                flex: 1,
-                height: hp('13%'),
-                paddingHorizontal: wp('2%'),
-                gap: wp('2%'),
-              }}>
-              <Gender
-                withOutbgIcon={'image-sharp'}
-                iconSize={wp('8%')}
-                onPress={toggleModal}
-                photo={photos[3] && photos[3]}
-                containerStyle={styles.photoContainer}
-              />
-              <Gender
-                withOutbgIcon={'image-sharp'}
-                iconSize={wp('8%')}
-                photo={photos[4] && photos[4]}
-                onPress={toggleModal}
-                containerStyle={styles.photoContainer}
-              />
-              <Gender
-                withOutbgIcon={'image-sharp'}
-                iconSize={wp('8%')}
-                onPress={toggleModal}
-                photo={photos[5] && photos[5]}
-                containerStyle={styles.photoContainer}
-              />
-            </View>
-
-            <BottomSheet isVisible={modalVisible} onClose={toggleModal}>
-              <View style={styles.bottomSheetMainContainer}>
-                <Text style={styles.heading}>Select Method</Text>
-                <CustomButton
-                  icon={'close'}
-                  iconSize={20}
-                  iconColor={COLORS.blackTxtColor}
-                  onPress={toggleModal}
-                  containerStyle={styles.bottomSheetBtn}
-                />
-              </View>
-              <View style={styles.bottomSheetInnerContainer}>
-                <PhotoUpload
-                  photos={photos}
-                  setPhotos={newPhotos => {
-                    setPhotos(newPhotos);
-                    handleInputChange(currentQuestion.id, newPhotos);
-                  }}
-                />
-              </View>
-              <CustomButton
-                containerStyle={styles.button}
-                text={'Save'}
-                textStyle={{
-                  fontFamily: fonts.Medium,
-                  color: COLORS.blackTxtColor,
                 }}
-                onPress={() => {
-                  // handleInputChange('dob', date);
-                  toggleModal();
+              >
+                <TouchableOpacity onPress={toggleModal}>
+                  <View style={styles.photoContainer}>
+                    {photos[0] ? (
+                      <Image
+                        source={{ uri: photos[0] }}
+                        style={styles.photo}
+                      />
+                    ) : (
+                      <Gender
+                        iconSize={wp('14%')}
+                        withOutbgIcon={'camera'}
+                        containerStyle={{ marginTop: hp('0.8%') }}
+                      />
+                    )}
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={toggleModal}>
+                  <View style={styles.photoContainer}>
+                    {photos[1] ? (
+                      <Image
+                        source={{ uri: photos[1] }}
+                        style={styles.photo}
+                      />
+                    ) : (
+                      <Gender
+                        iconSize={wp('14%')}
+                        withOutbgIcon={'camera'}
+                        containerStyle={{ marginTop: hp('0.8%') }}
+                      />
+                    )}
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ flex: 1 }}>
+                <TouchableOpacity onPress={toggleModal}>
+                  <View style={styles.photoContainer}>
+                    {photos[2] ? (
+                      <Image
+                        source={{ uri: photos[2] }}
+                        style={styles.photo}
+                      />
+                    ) : (
+                      <Gender
+                        iconSize={wp('14%')}
+                        withOutbgIcon={'camera'}
+                        containerStyle={{ marginTop: hp('0.8%') }}
+                      />
+                    )}
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={toggleModal}>
+                  <View style={styles.photoContainer}>
+                    {photos[3] ? (
+                      <Image
+                        source={{ uri: photos[3] }}
+                        style={styles.photo}
+                      />
+                    ) : (
+                      <Gender
+                        iconSize={wp('14%')}
+                        withOutbgIcon={'camera'}
+                        containerStyle={{ marginTop: hp('0.8%') }}
+                      />
+                    )}
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <BottomSheet
+              isVisible={photoModal}
+              onClose={() => setPhotoModal(false)}
+            >
+              <PhotoUpload
+                onPhotoSelect={uri => {
+                  setPhotos([...photos, uri]);
+                  setPhotoModal(false);
                 }}
               />
             </BottomSheet>
           </View>
         )}
+
+        {currentQuestion.type === 'slider' && (
+          <Text style={styles.text}>Slider placeholder</Text>
+        )}
       </ScrollView>
-      <View style={styles.buttonContainer}>
-        <Text style={styles.heading}>
-          {currentQuestion.id}
-          <Text style={styles.questionNumber}>/{questions.length}</Text>
-        </Text>
+      <View style={styles.footer}>
         <CustomButton
-          icon={'chevron-right'}
-          iconSize={wp('5%')}
-          iconColor={COLORS.blackTxtColor}
-          onPress={handleNext}
           containerStyle={styles.button}
+          text={'Next'}
+          onPress={handleNext}
         />
+        <TouchableOpacity onPress={handleSkip}>
+          <Text style={styles.skip}>Skip</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -427,97 +410,82 @@ export default QA;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: wp('6%'),
-    paddingTop: hp('4%'),
-    backgroundColor: COLORS.primary2,
-  },
-  heading: {
-    fontFamily: fonts.SemiBold,
-    fontSize: wp('5%'),
-    color: COLORS.blackTxtColor,
-    textAlign: 'center',
-  },
-  TxtInput: {
-    marginTop: wp('10%'),
-  },
-  dob: {
-    marginTop: wp('7%'),
-    color: COLORS.primary1,
-    fontSize: wp('4%'),
-    fontFamily: fonts.Medium,
-    marginBottom: wp('4%'),
-  },
-  dateText: {
     backgroundColor: COLORS.white,
     padding: wp('4%'),
-    borderRadius: wp('2%'),
-    textAlign: 'center',
+  },
+  heading: {
+    fontFamily: fonts.Bold,
+    fontSize: wp('6%'),
     color: COLORS.blackTxtColor,
+    textAlign: 'center',
+    marginVertical: hp('1%'),
   },
-  bottomSheetBtn: {
-    alignSelf: 'flex-end',
+  text: {
+    fontFamily: fonts.Medium,
+    fontSize: wp('4%'),
+    color: COLORS.blackTxtColor,
+    textAlign: 'center',
+    marginVertical: hp('2%'),
   },
-  continueWith: {
-    backgroundColor: COLORS.white,
-    marginTop: wp('5%'),
-    // paddingVertical: wp('2%'),
-  },
-  bottomSheetMainContainer: {
+  footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: hp('3%'),
   },
-  bottomSheetInnerContainer: {
-    alignItems: 'center',
+  button: {
+    flex: 1,
+    marginRight: wp('2%'),
+    paddingVertical: wp('4%'),
+  },
+  skip: {
+    fontFamily: fonts.Medium,
+    fontSize: wp('4%'),
+    color: COLORS.primary1,
+    textDecorationLine: 'underline',
+  },
+  photoDes: {
+    fontFamily: fonts.Medium,
+    fontSize: wp('3.7%'),
+    color: COLORS.blackTxtColor,
+    marginVertical: hp('1.5%'),
+    textAlign: 'center',
   },
   genderContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
-    gap: wp('5%'),
-  },
-  optionButton: {
-    borderWidth: wp('0.5%'),
-    borderColor: COLORS.white,
-    borderRadius: wp('1.5%'),
-    // padding: wp('2%'),
-    marginVertical: wp('3%'),
-    paddingVertical: wp('3%'),
-    backgroundColor: COLORS.white,
-  },
-  photoDes: {
-    color: COLORS.darkGrayColor,
-    fontSize: wp('4%'),
-    textAlign: 'center',
-    marginTop: wp('5%'),
-    marginBottom: wp('10%'),
-  },
-  photoContainer: {
-    borderRadius: wp('4%'),
-    backgroundColor: COLORS.white
-  },
-  selectedOptionButton: {
-    borderColor: COLORS.primary1,
-    borderWidth: wp('0.5%'),
-    // borderBlockEndColor: COLORS.primary1,
-  },
-  optionText: {
-    textAlign: 'center',
-    color: COLORS.blackTxtColor,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     marginVertical: hp('2%'),
   },
-  questionNumber: {
-    fontFamily: fonts.Regular,
-    color: COLORS.darkGrayColor,
-  },
-  button: {
-    backgroundColor: COLORS.primary1,
+  optionButton: {
+    backgroundColor: COLORS.white,
+    borderRadius: wp('5%'),
     paddingVertical: wp('3%'),
-    paddingHorizontal: wp('4%'),
+    paddingHorizontal: wp('5%'),
+    marginVertical: hp('1%'),
+    borderColor: COLORS.primary1,
+    borderWidth: 1,
+  },
+  selectedOptionButton: {
+    backgroundColor: COLORS.primary1,
+  },
+  optionText: {
+    fontFamily: fonts.Medium,
+    fontSize: wp('4%'),
+    color: COLORS.blackTxtColor,
+    textAlign: 'center',
+  },
+  photoContainer: {
+    borderColor: COLORS.primary1,
+    borderWidth: 1,
+    borderRadius: wp('2%'),
+    height: hp('13%'),
+    marginVertical: hp('0.8%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  photo: {
+    width: '100%',
+    height: '100%',
+    borderRadius: wp('2%'),
   },
 });

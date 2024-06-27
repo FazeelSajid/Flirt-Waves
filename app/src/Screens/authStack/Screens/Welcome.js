@@ -38,9 +38,9 @@ const Welcome = ({navigation}) => {
       />
 
       <ImageBackground source={imgs.welcomeScreen} style={styles.bgImg}>
-        <>
+        
           <Logos />
-        </>
+        
       </ImageBackground>
       <View style={{paddingHorizontal: wp('6%'), flex: 1}}>
         <Text style={[styles.heading, {marginTop: hp('2%')}]}>
@@ -134,6 +134,8 @@ const styles = StyleSheet.create({
   continueWith: {
     backgroundColor: COLORS.white,
     marginTop: wp('5%'),
+    paddingVertical: wp('4%'),
+
   },
   Problem: {
     fontFamily: fonts.SemiBold,

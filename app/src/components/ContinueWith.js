@@ -7,13 +7,14 @@ import {
 } from 'react-native-responsive-screen';
 import { fonts } from '../../config/Fonts';
 
-const ContinueWith = ({text, icon, bgColor, textStyle, onPress, containerStyle}) => {
+const ContinueWith = ({text, icon, bgColor, textStyle, onPress, containerStyle,keys}) => {
   return (
     <TouchableOpacity
+    key={keys}
       style={[
         styles.container,
         containerStyle,
-        icon ? {paddingVertical: wp('1.5%')} : {paddingVertical: wp('4%')},
+        icon ? {paddingVertical: wp('1.5%')} : '',
       ]}
       onPress={onPress}
       >
