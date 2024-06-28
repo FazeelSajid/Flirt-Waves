@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState}  from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,7 +6,9 @@ import {
   ScrollView,
   TouchableOpacity,
   Button,
-  Image
+  Image,
+  Platform,
+  PermissionsAndroid 
 } from 'react-native';
 import {COLORS} from '../../../../../config/COLORS';
 import {
@@ -23,6 +25,14 @@ import Gender from '../../../../components/Gender';
 import {fonts} from '../../../../../config/Fonts';
 import PhotoUpload from '../../../../components/PhotoUpload';
 import ContinueWith from '../../../../components/ContinueWith';
+import Slider from '@react-native-community/slider';
+import svg from '../../../../assets/svgs/Svg';
+import PopUpModal from '../../../../components/PopUpModal';
+import Location from  '../../../../assets/svgs/location.svg'
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import Geolocation from 'react-native-geolocation-service';
+import PhotoView from '../../../../components/PhotoView';
+import * as Progress from 'react-native-progress';
 
 
 const questions = [
@@ -45,11 +55,17 @@ const questions = [
   },
   {
     id: 4,
+    question: 'Looking for?',
+    type: 'choice',
+    options: ['A Relationship', 'Nothing Serious', "I'll know when i find it"],
+  },
+  {
+    id: 5,
     question: "What's your height?",
     type: 'slider',
   },
   {
-    id: 5,
+    id: 6,
     question: "What's your exercise habits?",
     type: 'choice',
     options: [
@@ -59,7 +75,7 @@ const questions = [
     ],
   },
   {
-    id: 6,
+    id: 7,
     question: "What's your cooking skills?",
     type: 'choice',
     options: [
@@ -70,7 +86,7 @@ const questions = [
     ],
   },
   {
-    id: 7,
+    id: 8,
     question: 'What two words explain you?',
     type: 'choice',
     options: [
@@ -80,7 +96,7 @@ const questions = [
     ],
   },
   {
-    id: 8,
+    id: 9,
     question: "What's your nightlife?",
     type: 'choice',
     options: [
@@ -90,13 +106,13 @@ const questions = [
     ],
   },
   {
-    id: 9,
+    id: 10,
     question: 'Your opinion on smoking',
     type: 'choice',
     options: ['I smoke', 'Not a fan but whatever', 'Zero tolerance'],
   },
   {
-    id: 10,
+    id: 11,
     question: 'What about kids?',
     type: 'choice',
     options: [
@@ -106,6 +122,20 @@ const questions = [
       'Thanks but no thanks',
     ],
   },
+  {
+    id: 12,
+    question: 'What are your eating habits?',
+    type: 'choice',
+    options: [
+      'A little of everything',
+      "Vegon",
+      'Flexitarian',
+      'Vegetarian',
+      "Junk food forever",
+      'halal'
+
+    ],
+  }
 ];
 
 const QA = ({navigation}) => {
@@ -116,6 +146,9 @@ const QA = ({navigation}) => {
   const [photoModal, setPhotoModal] = useState(false);
   const [selectedGender, setSelectedGender] = useState(null);
   const [photos, setPhotos] = useState([]);
+  const [locationPop, setLocationPop] = useState(false);
+  const [location, setLocation] = useState(null);
+
 
   // Toggle modal visibility
   const toggleModal = () => {
@@ -126,10 +159,13 @@ const QA = ({navigation}) => {
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      // console.log(currentQuestionIndex);
     } else {
       console.log('User responses:', responses);
+      setLocationPop(true)
+
       // Navigate to the next screen or submit the responses
-      // navigation.navigate('NextScreen', { responses });
+      // location && navigation.navigate('mainStack', { location }); 
     }
   };
 
@@ -156,11 +192,53 @@ const QA = ({navigation}) => {
 
   const currentQuestion = questions[currentQuestionIndex];
 
+  const [height, setHeight] = useState(165);
+
+  const convertToFeetInches = cm => {
+    const inches = cm / 2.54;
+    const feet = Math.floor(inches / 12);
+    const remainingInches = Math.round(inches % 12);
+    return `${feet}'${remainingInches}"`;
+  };
+
+
+  const requestLocationPermission = async () => {
+    if (Platform.OS === 'ios') {
+      const result = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+      if (result === RESULTS.GRANTED) {
+        getLocation();
+      }
+    } else if (Platform.OS === 'android') {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        getLocation();
+      }
+    }
+  };
+
+  const getLocation = () => {
+    Geolocation.getCurrentPosition(
+      (position) => {
+        // console.log(position);
+        setLocation(position.coords);
+        setLocationPop(false);
+        navigation.navigate('mainStack', { location });
+      },
+      (error) => {
+        console.log(error.code, error.message);
+        setLocation(false);
+      },
+      // { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
+  };
+// console.log(location.coords);
   return (
     <View style={styles.container}>
       <CustomHeader
         left={'chevron-left'}
-        iconSize={wp('6%')}
+        iconSize={wp('8%')}
         leftIconColor={COLORS.blackTxtColor}
         leftOnpress={handlePrev}
       />
@@ -168,7 +246,7 @@ const QA = ({navigation}) => {
         style={[
           styles.heading,
           currentQuestion.type === 'choice' ||
-            ('photo' && {marginTop: hp('3%')}),
+            ('photo' || 'slider' && {marginTop: hp('3%')}),
         ]}>
         {currentQuestion.question}
       </Text>
@@ -181,14 +259,13 @@ const QA = ({navigation}) => {
               value={responses['name'] || ''}
               onChangeText={text => handleInputChange('name', text)}
               placeholder="Enter Name"
+              placeholderTextColor={COLORS.lightGrayColor}
             />
             <Text style={styles.dob}>Date Of Birth</Text>
             <TouchableOpacity onPress={toggleModal}>
               <Text style={styles.dateText}>{date}</Text>
             </TouchableOpacity>
             <BottomSheet isVisible={modalVisible} onClose={toggleModal}>
-              <View style={styles.bottomSheetMainContainer}>
-                <Text style={styles.heading}>Date Of Birth</Text>
                 <CustomButton
                   icon={'close'}
                   iconSize={20}
@@ -196,7 +273,6 @@ const QA = ({navigation}) => {
                   onPress={toggleModal}
                   containerStyle={styles.bottomSheetBtn}
                 />
-              </View>
               <View style={styles.bottomSheetInnerContainer}>
                 <DatePicker
                   mode="date"
@@ -211,12 +287,15 @@ const QA = ({navigation}) => {
                     setModalVisible(false);
                   }}
                   dividerColor={COLORS.primary1}
-                  style={{
-                    padding: 0,
-                    margin: 0,
-                    width: wp('65%'),
-                    justifyContent: 'space-between',
-                  }}
+                  
+                  // style={{
+                  //   padding: 0,
+                  //   margin: 0,
+                  //   // width: wp('100%'),
+                  //   // justifyContent: 'space-between',
+                  // }}
+                  // style={{ backgroundColor: 'red', alignItems: 'center'}}
+                  
                 />
               </View>
               <CustomButton
@@ -247,7 +326,6 @@ const QA = ({navigation}) => {
                   paddingVertical: wp('5%'),
                   paddingHorizontal: wp('10%'),
                   backgroundColor: COLORS.white,
-
                 }}
               />
               <Gender
@@ -303,14 +381,20 @@ const QA = ({navigation}) => {
                   flex: 1,
                   marginRight: wp('2%'),
                 }}>
-                <Gender
+                  {photos[0] ? <PhotoView photo={photos[0]}  /> : <Gender
+                  iconSize={wp('14%')}
+                  withOutbgIcon={'image-sharp'}
+                  onPress={toggleModal}
+                  // photo={photos[0] && photos[0]}
+                  containerStyle={styles.photoContainer}
+                />  }
+                {/* <Gender
                   iconSize={wp('14%')}
                   withOutbgIcon={'image-sharp'}
                   onPress={toggleModal}
                   photo={photos[0] && photos[0]}
-                containerStyle={styles.photoContainer}
-
-                />
+                  containerStyle={styles.photoContainer}
+                /> */}
               </View>
               <View
                 style={{
@@ -318,24 +402,21 @@ const QA = ({navigation}) => {
                   height: ' 100%',
                   gap: wp('2%'),
                   width: wp('27%'),
-
                 }}>
-                <Gender
-                  withOutbgIcon={'image-sharp'}
+                 {photos[1] ? <PhotoView photo={photos[1]}  /> : <Gender
                   iconSize={wp('8%')}
-                  onPress={toggleModal}
-                  photo={photos[1] && photos[1]}
-                containerStyle={styles.photoContainer}
-
-                />
-                <Gender
                   withOutbgIcon={'image-sharp'}
-                  iconSize={wp('8%')}
                   onPress={toggleModal}
-                  photo={photos[2] && photos[2]}
-                containerStyle={styles.photoContainer}
-
-                />
+                  // photo={photos[0] && photos[0]}
+                  containerStyle={styles.photoContainer}
+                />  }
+                 {photos[2] ? <PhotoView photo={photos[2]}  /> : <Gender
+                  iconSize={wp('8%')}
+                  withOutbgIcon={'image-sharp'}
+                  onPress={toggleModal}
+                  // photo={photos[0] && photos[0]}
+                  containerStyle={styles.photoContainer}
+                />  }
               </View>
             </View>
             <View
@@ -346,41 +427,44 @@ const QA = ({navigation}) => {
                 paddingHorizontal: wp('2%'),
                 gap: wp('2%'),
               }}>
-              <Gender
-                withOutbgIcon={'image-sharp'}
-                iconSize={wp('8%')}
-                onPress={toggleModal}
-                photo={photos[3] && photos[3]}
-                containerStyle={styles.photoContainer}
-              />
-              <Gender
-                withOutbgIcon={'image-sharp'}
-                iconSize={wp('8%')}
-                photo={photos[4] && photos[4]}
-                onPress={toggleModal}
-                containerStyle={styles.photoContainer}
-              />
-              <Gender
-                withOutbgIcon={'image-sharp'}
-                iconSize={wp('8%')}
-                onPress={toggleModal}
-                photo={photos[5] && photos[5]}
-                containerStyle={styles.photoContainer}
-              />
+             {photos[3] ? <PhotoView photo={photos[3]}  /> : <Gender
+                  iconSize={wp('8%')}
+                  withOutbgIcon={'image-sharp'}
+                  onPress={toggleModal}
+                  // photo={photos[3] && photos[3]}
+                  containerStyle={styles.photoContainer}
+                />  }
+              {photos[4] ? <PhotoView photo={photos[4]}  /> : <Gender
+                  iconSize={wp('8%')}
+                  withOutbgIcon={'image-sharp'}
+                  onPress={toggleModal}
+                  // photo={photos[0] && photos[0]}
+                  containerStyle={styles.photoContainer}
+                />  }
+              {photos[5] ? <PhotoView photo={photos[5]}  /> : <Gender
+                  iconSize={wp('8%')}
+                  withOutbgIcon={'image-sharp'}
+                  onPress={toggleModal}
+                  // photo={photos[0] && photos[0]}
+                  containerStyle={styles.photoContainer}
+                />  }
             </View>
 
             <BottomSheet isVisible={modalVisible} onClose={toggleModal}>
-              <View style={styles.bottomSheetMainContainer}>
-                <Text style={styles.heading}>Select Method</Text>
-                <CustomButton
+              {/* <View style={styles.bottomSheetMainContainer}> */}
+              {/* <Text style={styles.heading}>Select Method</Text> */}
+
+              {/* </View> */}
+
+              <CustomButton
                   icon={'close'}
                   iconSize={20}
                   iconColor={COLORS.blackTxtColor}
                   onPress={toggleModal}
                   containerStyle={styles.bottomSheetBtn}
                 />
-              </View>
               <View style={styles.bottomSheetInnerContainer}>
+                
                 <PhotoUpload
                   photos={photos}
                   setPhotos={newPhotos => {
@@ -389,7 +473,7 @@ const QA = ({navigation}) => {
                   }}
                 />
               </View>
-              <CustomButton
+              {/* <CustomButton
                 containerStyle={styles.button}
                 text={'Save'}
                 textStyle={{
@@ -400,11 +484,51 @@ const QA = ({navigation}) => {
                   // handleInputChange('dob', date);
                   toggleModal();
                 }}
-              />
+              /> */}
             </BottomSheet>
           </View>
         )}
+        {currentQuestion.type === 'slider' && (
+          <View style={styles.heightContainer} >
+            <View style={styles.heightBox}>
+              <Text
+                style={styles.heightText}>{`${height} cm (${convertToFeetInches(
+                height,
+              )})`}</Text>
+            </View>
+            <Slider
+              style={styles.slider}
+              minimumValue={100}
+              maximumValue={220}
+              step={1}
+              value={height}
+              onValueChange={setHeight}
+              minimumTrackTintColor={COLORS.primary1}
+              maximumTrackTintColor={COLORS.white}
+              thumbTintColor={COLORS.primary1}
+              thumbImage={require('../../../../assets/svgs/thumb.png')}
+              trackStyle={{height: 20}}
+              thumbStyle={styles.thumb}
+              
+            />
+          </View>
+        )}
       </ScrollView>
+      <PopUpModal 
+       visible={locationPop}
+       svg={<Location width={wp('20%')} height={hp('10%')} />}
+       btn1Press={requestLocationPermission}
+       icon="alert" // You can change this to any Ionicons icon name
+       message='Enable location through which we can provide you with profile who are nearby and meet your preferences.'
+       btn1Txt="Use my current location"
+       btn1style={{backgroundColor: COLORS.primary1}}
+       btn2Txt={'Maybe, later'}
+       btn2Press={()=> setLocationPop(false)}
+       btn2style={{backgroundColor: COLORS.primary2, width: '100%', marginTop: wp(3)}}
+       textStyle ={styles.popStyle}
+       btn2TxtStyle={{color: COLORS.primary1}}
+      />
+      <Progress.Bar  progress={0.3} width={200} />
       <View style={styles.buttonContainer}>
         <Text style={styles.heading}>
           {currentQuestion.id}
@@ -412,10 +536,10 @@ const QA = ({navigation}) => {
         </Text>
         <CustomButton
           icon={'chevron-right'}
-          iconSize={wp('5%')}
+          iconSize={wp('6%')}
           iconColor={COLORS.blackTxtColor}
           onPress={handleNext}
-          containerStyle={styles.button}
+          containerStyle={[styles.button, {flexDirection: 'row'}]}
         />
       </View>
     </View>
@@ -456,19 +580,19 @@ const styles = StyleSheet.create({
   },
   bottomSheetBtn: {
     alignSelf: 'flex-end',
+    // backgroundColor: 'red'
   },
   continueWith: {
     backgroundColor: COLORS.white,
     marginTop: wp('5%'),
     // paddingVertical: wp('2%'),
   },
-  bottomSheetMainContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   bottomSheetInnerContainer: {
-    alignItems: 'center',
+    // alignItems: 'center',
+    // backgroundColor: 'green'
+    paddingHorizontal: wp(3),
+    paddingVertical: wp(3),
+    marginBottom: wp(4),
   },
   genderContainer: {
     flexDirection: 'row',
@@ -494,7 +618,7 @@ const styles = StyleSheet.create({
   },
   photoContainer: {
     borderRadius: wp('4%'),
-    backgroundColor: COLORS.white
+    backgroundColor: COLORS.white,
   },
   selectedOptionButton: {
     borderColor: COLORS.primary1,
@@ -503,7 +627,7 @@ const styles = StyleSheet.create({
   },
   optionText: {
     textAlign: 'center',
-    color: COLORS.blackTxtColor,
+    color: COLORS.darkGrayColor,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -520,4 +644,36 @@ const styles = StyleSheet.create({
     paddingVertical: wp('3%'),
     paddingHorizontal: wp('4%'),
   },
+  slider: {
+    // width: wp('100%'),
+    height: hp('4%'),
+    // backgroundColor: 'green'
+  },
+  heightBox: {
+    borderColor: COLORS.primary1, // similar to the slider color
+    borderWidth: 1,
+    borderRadius: wp('2%'),
+    padding: wp('2%'),
+    marginBottom: hp('2%'),
+    backgroundColor: COLORS.white,
+    marginTop: wp('20')
+  },
+  heightText: {
+    fontSize: wp('5%'),
+    color: '#000000',
+    textAlign: 'center',
+  },
+  heightContainer:{
+    paddingHorizontal: wp(3)
+  }, 
+  popStyle: {
+    fontSize: wp('4%'),
+    textAlign: 'center',
+    marginBottom: hp('3%'),
+    marginTop: hp('3%'),
+    color: COLORS.lightTxtColor,
+    fontFamily: 'Lexend',
+    lineHeight: wp('8%'),
+    paddingHorizontal: wp('3%'),
+  }
 });

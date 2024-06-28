@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View, Pressable} from 'react-native';
 import React, {Children} from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
@@ -30,7 +30,11 @@ const CustomButton = ({
         pressed && {opacity: 0.5, borderRadius: wp('2.5%')},
       ]}>
       {icon ? (
+        <>
         <Icon name={icon} size={iconSize} color={iconColor} />
+
+ { text && <Text style={[textStyle, txtColor]}>{text}</Text>}
+      </>
       ) : (
         <Text style={[textStyle, txtColor]}>{text}</Text>
       )}

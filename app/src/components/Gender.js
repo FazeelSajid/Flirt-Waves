@@ -7,6 +7,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {fonts} from '../../config/Fonts';
+import CustomButton from './CustomButton';
 
 const Gender = ({gender, icon, isSelected, onPress, withOutbgIcon, containerStyle, iconSize, photo}) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -42,16 +43,14 @@ const Gender = ({gender, icon, isSelected, onPress, withOutbgIcon, containerStyl
           />
         </View>
       )}
-      {photo ? 
-            <Image source={{ uri: photo }} style={styles.photo}  />
-          : <Icon name={withOutbgIcon} size={iconSize} color={COLORS.primary1} /> }
+      {withOutbgIcon && <Icon name={withOutbgIcon} size={iconSize} color={COLORS.primary1} />}
 
-          <Modal visible={isModalVisible} transparent={true}>
+          {/* <Modal visible={isModalVisible} transparent={true}>
         <View style={styles.modalContainer}>
           <Image source={{ uri: selectedImage }} style={styles.fullScreenImage} />
-          <Button title="Close" onPress={() => setIsModalVisible(false)} />
+            <CustomButton text={'Close'}  onPress={() => setIsModalVisible(false)} containerStyle={{backgroundColor: COLORS.primary1, padding: wp('3'), marginTop: wp(3)}}   />
         </View>
-      </Modal>
+      </Modal> */}
 
      {gender && <Text style={styles.gender}>{gender}</Text> } 
     </TouchableOpacity>
@@ -80,20 +79,21 @@ const styles = StyleSheet.create({
   gender: {
     marginTop: wp('5%'),
     fontFamily: fonts.Regular,
+    color: COLORS.blackTxtColor
   },
-  fullScreenImage: {
-    width: '90%',
-    height: '70%',
-  },
+  // fullScreenImage: {
+  //   width: '90%',
+  //   height: '70%',
+  // },
   photo: {
     width: '100%',
     height: '100%',
-    margin: 5,
+    // margin: 5,
   },
-  modalContainer: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.9)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  // modalContainer: {
+  //   flex: 1,
+  //   backgroundColor: 'rgba(0, 0, 0, 0.9)',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // },
 });

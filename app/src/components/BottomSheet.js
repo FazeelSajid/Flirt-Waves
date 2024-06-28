@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
         borderTopLeftRadius: widthPercentageToDP('6%'),
         borderTopRightRadius:  widthPercentageToDP('6%'),
-        paddingTop: widthPercentageToDP('3%'),
+        paddingTop: widthPercentageToDP('2%'),
         paddingHorizontal: widthPercentageToDP('4%'),
       },
       
