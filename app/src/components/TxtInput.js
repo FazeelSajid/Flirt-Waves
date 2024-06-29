@@ -35,6 +35,7 @@ const TxtInput = ({
   onFocus,
   onPress,
   error,
+  placeholderTextColor
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(!secureTextEntry);
 
@@ -49,6 +50,7 @@ const TxtInput = ({
         <Icon name={rightIcon} size={rightIconSize} color={rightIconColor} />
         <TextInput
           placeholder={placeholder}
+          placeholderTextColor={placeholderTextColor}
           style={styles.searchInput}
           selectionColor={COLORS.primary1}
           keyboardType={keyboardType}

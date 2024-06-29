@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
   policy: {
     fontFamily: fonts.Regular,
     lineHeight: wp('7%'),
+    color: COLORS.darkGrayColor
   },
   btn: {
     paddingVertical: wp('4%'),

@@ -7,7 +7,7 @@ import ReviewNaccept from './Screens/ReviewNaccept'
 import SignUp from './Screens/SignUp'
 import ForgetPassword from './Screens/ForgetPassword'
 import QA from './Screens/Welcome/QA'
-
+import MainStack from '../mainStack/MainStack'
 const Stack = createNativeStackNavigator()
 
 const AuthStack = () => {
@@ -21,6 +21,7 @@ const AuthStack = () => {
       <Stack.Screen name="signup" component={SignUp} />
       <Stack.Screen name="forgetPass" component={ForgetPassword} />
       <Stack.Screen name="QA" component={QA} />
+      <Stack.Screen name='mainStack' component={MainStack} />
 
     </Stack.Navigator>
   )

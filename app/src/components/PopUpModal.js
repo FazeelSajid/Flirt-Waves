@@ -8,8 +8,9 @@ import {
 } from 'react-native-responsive-screen';
 import Warning from '../assets/svgs/Warning.svg';
 import CustomButton from './CustomButton';
+import { fonts } from '../../config/Fonts';
 
-const PopUpModal = ({ visible, onClose, icon, message, buttonText, svg }) => {
+const PopUpModal = ({ textStyle ,visible, onClose, icon, message, btn1Txt, btn2Txt, svg, childern,btn2TxtStyle , btn1Press, btn2Press, btn1style, btn2style }) => {
   return (
     <Modal
       transparent={true}
@@ -17,11 +18,16 @@ const PopUpModal = ({ visible, onClose, icon, message, buttonText, svg }) => {
       visible={visible}
       onRequestClose={onClose}
     >
+      {/* {childern} */}
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
-          <Warning width={wp('20%')} height={hp('10%')} />
-          <Text style={styles.message}>{message}</Text>
-          <CustomButton text={buttonText} onPress={onClose} containerStyle={styles.button} textStyle={styles.buttonText} />
+          {svg}
+          <Text style={textStyle}>{message}</Text>
+          {/* <View> */}
+          <CustomButton text={btn1Txt} onPress={btn1Press} containerStyle={[styles.button, btn1style]} textStyle={styles.buttonText} />
+          { btn2Txt && <CustomButton text={btn2Txt} onPress={btn2Press} containerStyle={[styles.button, btn2style]} textStyle={[styles.buttonText, btn2TxtStyle]} />}
+
+          {/* </View> */}
         </View>
       </View>
     </Modal>
@@ -58,7 +64,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp('3%'),
   },
   button: {
-    backgroundColor: COLORS.primary1,
+    // backgroundColor: COLORS.primary1,
     paddingVertical: hp('1.5%'),
     paddingHorizontal: wp('10%'),
     borderRadius: wp('3%'),
@@ -69,7 +75,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: COLORS.blackTxtColor,
     fontSize: wp('4%'),
-    fontFamily: 'Lexend',
+    fontFamily: fonts.Regular,
   },
 });
 
