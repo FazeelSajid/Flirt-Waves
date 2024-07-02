@@ -16,7 +16,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-const PhotoUpload = ({photos, setPhotos}) => {
+const PhotoUpload = ({photos, setPhotos, toggleModal}) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -35,6 +35,7 @@ const PhotoUpload = ({photos, setPhotos}) => {
     })
       .then(image => {
         setPhotos([...photos, image.path]);
+        toggleModal()
       })
       .catch(error => {
         console.log('ImagePicker Error: ', error.message);
@@ -55,6 +56,7 @@ const PhotoUpload = ({photos, setPhotos}) => {
     })
       .then(image => {
         setPhotos([...photos, image.path]);
+        toggleModal()
       })
       .catch(error => {
         console.log('ImagePicker Error: ', error.message);

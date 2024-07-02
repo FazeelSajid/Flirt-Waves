@@ -16,6 +16,7 @@ import {
 } from 'react-native-responsive-screen';
 import {COLORS} from '../../config/COLORS';
 import {fonts} from '../../config/Fonts';
+import CustomButton from './CustomButton';
 
 const TxtInput = ({
   style,
@@ -35,7 +36,10 @@ const TxtInput = ({
   onFocus,
   onPress,
   error,
-  placeholderTextColor
+  placeholderTextColor,
+  rightIconPress,
+  isEmoji,
+  containerStyle
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(!secureTextEntry);
 
@@ -44,14 +48,22 @@ const TxtInput = ({
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
+  
   return (
     <View style={style}>
-      <View style={[styles.searchContainer, isfocused && styles.focused]}>
-        <Icon name={rightIcon} size={rightIconSize} color={rightIconColor} />
+      <View style={[styles.searchContainer, containerStyle,  isfocused && styles.focused]}>
+        
+        {rightIcon &&  <CustomButton
+          icon={rightIcon}
+          iconSize={rightIconSize}
+          iconColor={rightIconColor}
+          onPress={rightIconPress}
+          style={styles.iconBtn}
+        />  }
         <TextInput
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor}
-          style={styles.searchInput}
+          style={[styles.searchInput]}
           selectionColor={COLORS.primary1}
           keyboardType={keyboardType}
           onFocus={() => onFocus ? onFocus() : setFocused(true)}
@@ -104,5 +116,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+  },
+  iconBtn: {
+    paddingHorizontal: wp(3),
   },
 });

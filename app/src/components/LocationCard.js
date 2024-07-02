@@ -1,60 +1,46 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native'
-import React from 'react'
-import { COLORS } from '../../config/COLORS';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React from 'react';
 import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp,
-  } from 'react-native-responsive-screen';
-  
-import CustomButton from './CustomButton';
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {COLORS} from '../../config/COLORS';
 
-const LocationCard = ({text, iconLeft, iconRight, containerStyle, onPress}) => {
+const LocationCard = ({text1, leftIcon, text2, txt1style, txt2style, rightIcon, containerStyle, rigntOnpress, rightSvg, leftSvg}) => {
   return (
-    <Pressable style={[styles.locationCard, containerStyle]} onPress={onPress} >
-          <CustomButton
-            icon={iconLeft}
-            containerStyle={{backgroundColor: COLORS.blackTxtColor}}
-            iconColor={COLORS.bgColor}
-            size={23}
-            style={[{borderRadius: wp('2.5%')}]}
-          />
-          <View style={styles.locationCardContentContainer}>
-            <Text style={styles.title}>{text}</Text>
-          </View>
-          <CustomButton
-            icon={iconRight}
-            containerColor={COLORS.bgColor}
-            iconColor={COLORS.white}
-            size={15}
-            style={{borderRadius: wp('2.5%')}}
-          />
-        </Pressable>
-  )
-}
+    <View style={[styles.container, containerStyle]}>
+      <View style={{flexDirection: 'row'}}>
+        <View style={styles.iconContainer}>
+          {leftSvg}
+         {leftIcon && <Icon name={leftIcon} size={wp('7%')} color={COLORS.white} />}
+        </View>
+        <View style={{paddingHorizontal: wp(3), paddingVertical: hp('0.5')}}>
+          <Text style={txt1style}>{text1}</Text>
+          <Text style={txt2style}>{text2}</Text>
+        </View>
+      </View>
+      <TouchableOpacity style={{ justifyContent: 'center'}} onPress={rigntOnpress} >
+        {rightSvg}
+        {rightIcon &&<Icon name={rightIcon} size={wp('7%')} color={COLORS.primary1} />}
+      </TouchableOpacity>
+    </View>
+  );
+};
 
-export default LocationCard
+export default LocationCard;
 
 const styles = StyleSheet.create({
-    locationCard: {
-        flexDirection: 'row',
-        backgroundColor: COLORS.cardBgColor,
-        borderRadius: wp('3%'),
-        padding: wp('3%'),
-        marginVertical: hp('0.5%'),
-        // borderBottomWidth: 1,
-        // borderBottomColor: COLORS.borderColor,
-        alignItems: 'center',
-      },
-      locationCardContentContainer: {
-        flex: 1,
-        paddingHorizontal: wp('4%'),
-      },
-      title: {
-        fontSize: wp('4.2%'),
-        fontWeight: '500',
-        // marginBottom: hp('0.5%'),
-        textAlign: 'left',
-        lineHeight: wp('5.3%'),
-        color: COLORS.grayTextColor
-      },
-})
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // flex: 1
+  },
+  iconContainer: {
+    justifyContent: 'center',
+    paddingHorizontal: wp(3),
+    backgroundColor: COLORS.primary1,
+    borderRadius: wp('2%'),
+    // alignItems: 'center',
+  },
+});

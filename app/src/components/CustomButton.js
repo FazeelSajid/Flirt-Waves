@@ -15,6 +15,7 @@ const CustomButton = ({
   icon,
   iconSize,
   iconColor,
+  pressedRadius
 }) => {
   return (
     <Pressable
@@ -27,7 +28,7 @@ const CustomButton = ({
           borderColor: borderColor,
           borderWidth: 2,
         },
-        pressed && {opacity: 0.5, borderRadius: wp('2.5%')},
+        pressed && {opacity: 0.5, borderRadius: pressedRadius},
       ]}>
       {icon ? (
         <>
@@ -36,7 +37,7 @@ const CustomButton = ({
  { text && <Text style={[textStyle, txtColor]}>{text}</Text>}
       </>
       ) : (
-        <Text style={[textStyle, txtColor]}>{text}</Text>
+        <Text style={[textStyle, txtColor, ]}>{text}</Text>
       )}
     </Pressable>
   );

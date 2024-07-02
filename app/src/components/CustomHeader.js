@@ -1,11 +1,9 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {COLORS} from '../../config/COLORS';
-import {IconButton} from 'react-native-paper';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
-  RFValue,
 } from 'react-native-responsive-screen';
 import CustomButton from './CustomButton';
 
@@ -19,6 +17,8 @@ const CustomHeader = ({
   headingColor,
   leftIconColor,
   rightIconColor,
+  rightText,
+  rightTextStyle
   
 }) => {
   return (
@@ -38,6 +38,8 @@ const CustomHeader = ({
         size={iconSize}
         iconColor={rightIconColor}
         onPress={rightOnPress}
+        text={rightText}
+        textStyle={rightTextStyle}
       />
     </View>
   );

@@ -5,12 +5,13 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import AuthStack from './app/src/Screens/authStack/authStack'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import MainStack from './app/src/Screens/mainStack/MainStack';
 
 const App = () => {
   return (
   //  <GestureHandlerRootView style={{flex: 1}}>
     <NavigationContainer>
-      <AuthStack/>
+      <MainStack/>
     </NavigationContainer>
   //  </GestureHandlerRootView>
     
