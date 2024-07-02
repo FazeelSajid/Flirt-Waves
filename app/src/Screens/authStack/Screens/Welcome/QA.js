@@ -1,4 +1,4 @@
-import React, {useState}  from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,32 +8,30 @@ import {
   Button,
   Image,
   Platform,
-  PermissionsAndroid 
+  PermissionsAndroid,
 } from 'react-native';
 import {COLORS} from '../../../../../config/COLORS';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {useNavigation} from '@react-navigation/native';
 import CustomHeader from '../../../../components/CustomHeader';
 import CustomButton from '../../../../components/CustomButton';
 import TxtInput from '../../../../components/TxtInput';
 import BottomSheet from '../../../../components/BottomSheet';
-import DatePicker from 'react-native-date-picker';
+// import DatePicker from 'react-native-date-picker';
 import Gender from '../../../../components/Gender';
 import {fonts} from '../../../../../config/Fonts';
 import PhotoUpload from '../../../../components/PhotoUpload';
 import ContinueWith from '../../../../components/ContinueWith';
 import Slider from '@react-native-community/slider';
-import svg from '../../../../assets/svgs/Svg';
 import PopUpModal from '../../../../components/PopUpModal';
-import Location from  '../../../../assets/svgs/location.svg'
-import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import Location from '../../../../assets/svgs/location.svg';
+import Warning from '../../../../assets/svgs/Warning.svg';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 import PhotoView from '../../../../components/PhotoView';
-import * as Progress from 'react-native-progress';
-
+import DatePickr from '../../../../components/DatePickr';
 
 const questions = [
   {
@@ -58,26 +56,31 @@ const questions = [
     question: 'Looking for?',
     type: 'choice',
     options: ['A Relationship', 'Nothing Serious', "I'll know when i find it"],
+    isSkipable: true,
   },
   {
     id: 5,
     question: "What's your height?",
     type: 'slider',
+    isSkipable: true,
   },
   {
     id: 6,
     question: "What's your exercise habits?",
     type: 'choice',
+    isSkipable: true,
     options: [
       'Occasional Exercise',
       'Enough Cardio to keep on',
       'Exercise all the time',
     ],
+
   },
   {
     id: 7,
     question: "What's your cooking skills?",
     type: 'choice',
+    isSkipable: true,
     options: [
       "I'm a microwave master",
       "I'm a delivery expert",
@@ -89,6 +92,7 @@ const questions = [
     id: 8,
     question: 'What two words explain you?',
     type: 'choice',
+    isSkipable: true,
     options: [
       'Introvert and Lazybones',
       'Natural born go-getter',
@@ -99,6 +103,7 @@ const questions = [
     id: 9,
     question: "What's your nightlife?",
     type: 'choice',
+    isSkipable: true,
     options: [
       "I'm in bed by midnight",
       "I'm a night owl",
@@ -109,12 +114,14 @@ const questions = [
     id: 10,
     question: 'Your opinion on smoking',
     type: 'choice',
+    isSkipable: true,
     options: ['I smoke', 'Not a fan but whatever', 'Zero tolerance'],
   },
   {
     id: 11,
     question: 'What about kids?',
     type: 'choice',
+    isSkipable: true,
     options: [
       'I love the one I have',
       "I'd like some",
@@ -126,28 +133,29 @@ const questions = [
     id: 12,
     question: 'What are your eating habits?',
     type: 'choice',
+    isSkipable: true,
     options: [
       'A little of everything',
-      "Vegon",
+      'Vegon',
       'Flexitarian',
       'Vegetarian',
-      "Junk food forever",
-      'halal'
-
+      'Junk food forever',
+      'halal',
     ],
-  }
+  },
 ];
 
 const QA = ({navigation}) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [responses, setResponses] = useState({});
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [photoModal, setPhotoModal] = useState(false);
   const [selectedGender, setSelectedGender] = useState(null);
   const [photos, setPhotos] = useState([]);
   const [locationPop, setLocationPop] = useState(false);
   const [location, setLocation] = useState(null);
+  const [photoPopup, setPhotoPopup] = useState(false);
 
 
   // Toggle modal visibility
@@ -157,16 +165,22 @@ const QA = ({navigation}) => {
 
   // Handle the next question
   const handleNext = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      // console.log(currentQuestionIndex);
-    } else {
-      console.log('User responses:', responses);
-      setLocationPop(true)
-
-      // Navigate to the next screen or submit the responses
-      // location && navigation.navigate('mainStack', { location }); 
+    if (currentQuestion.type === 'photo' && photos.length === 0) {
+        setPhotoPopup(true)
+    }else{
+      if (currentQuestionIndex < questions.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        // console.log(currentQuestionIndex);
+        console.log(((currentQuestionIndex + 1) / questions.length) * 100);
+      } else {
+        console.log('User responses:', responses);
+        setLocationPop(true);
+  
+        // Navigate to the next screen or submit the responses
+        // location && navigation.navigate('mainStack', { location });
+      }
     }
+   
   };
 
   // Handle the previous question
@@ -179,8 +193,14 @@ const QA = ({navigation}) => {
   };
 
   // Handle skipping a question
-  const handleSkip = () => {
+  const handleSkip = (questionId) => {
+    if (currentQuestion.id > questions.length-1) {
+      handleNext()
+      console.log('next');
+    } else {
+      setResponses({...responses, [questionId]: 'Skipped'});
     handleNext();
+    }
   };
 
   // Handle input change
@@ -188,7 +208,7 @@ const QA = ({navigation}) => {
     setResponses({...responses, [questionId]: value});
   };
 
-  const date = selectedDate.toLocaleDateString();
+  // const date = selectedDate.toLocaleDateString();
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -201,7 +221,6 @@ const QA = ({navigation}) => {
     return `${feet}'${remainingInches}"`;
   };
 
-
   const requestLocationPermission = async () => {
     if (Platform.OS === 'ios') {
       const result = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
@@ -210,7 +229,7 @@ const QA = ({navigation}) => {
       }
     } else if (Platform.OS === 'android') {
       const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         getLocation();
@@ -220,38 +239,52 @@ const QA = ({navigation}) => {
 
   const getLocation = () => {
     Geolocation.getCurrentPosition(
-      (position) => {
+      position => {
         // console.log(position);
         setLocation(position.coords);
         setLocationPop(false);
-        navigation.navigate('mainStack', { location });
+        navigation.navigate('mainStack', {location});
       },
-      (error) => {
+      error => {
         console.log(error.code, error.message);
         setLocation(false);
       },
-      // { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
     );
   };
-// console.log(location.coords);
+  // console.log(location.coords);
   return (
     <View style={styles.container}>
+      {currentQuestion.isSkipable ? <CustomHeader
+        left={'chevron-left'}
+        iconSize={wp('8%')}
+        leftIconColor={COLORS.blackTxtColor}
+        leftOnpress={handlePrev}
+        rightText={'Skip'}
+        rightTextStyle={{
+          fontFamily: fonts.Bold,
+          color: COLORS.blackTxtColor,
+          fontSize: wp(4),
+          textDecorationLine: 'underline'
+        }}
+        rightOnPress={handleSkip}
+      /> :
       <CustomHeader
         left={'chevron-left'}
         iconSize={wp('8%')}
         leftIconColor={COLORS.blackTxtColor}
         leftOnpress={handlePrev}
       />
+      }
       <Text
         style={[
           styles.heading,
-          currentQuestion.type === 'choice' ||
-            ('photo' || 'slider' && {marginTop: hp('3%')}),
+          // currentQuestion.type != 'choice' || 'photo' ||'slider' && {marginTop: hp('3%')},
         ]}>
         {currentQuestion.question}
       </Text>
       <ScrollView
-        style={currentQuestion.type === 'choice' ? {marginTop: hp('13%')} : ''}>
+        style={[currentQuestion.type === 'choice' ? {marginTop: hp('13%')} : '']} contentContainerStyle={{flexGrow :1, justifyContent: 'space-between'}} >
+          <View style={{  }} >
         {currentQuestion.type === 'multi' && (
           <>
             <TxtInput
@@ -263,53 +296,33 @@ const QA = ({navigation}) => {
             />
             <Text style={styles.dob}>Date Of Birth</Text>
             <TouchableOpacity onPress={toggleModal}>
-              <Text style={styles.dateText}>{date}</Text>
+              <Text style={styles.dateText}>{selectedDate}</Text>
             </TouchableOpacity>
             <BottomSheet isVisible={modalVisible} onClose={toggleModal}>
-                <CustomButton
-                  icon={'close'}
-                  iconSize={20}
-                  iconColor={COLORS.blackTxtColor}
-                  onPress={toggleModal}
-                  containerStyle={styles.bottomSheetBtn}
-                />
+              <View></View>
               <View style={styles.bottomSheetInnerContainer}>
-                <DatePicker
-                  mode="date"
-                  onDateChange={setSelectedDate}
-                  open={modalVisible}
-                  date={selectedDate}
-                  onConfirm={date => {
-                    setModalVisible(false);
-                    setSelectedDate(date);
-                  }}
-                  onCancel={() => {
-                    setModalVisible(false);
-                  }}
-                  dividerColor={COLORS.primary1}
-                  
-                  // style={{
-                  //   padding: 0,
-                  //   margin: 0,
-                  //   // width: wp('100%'),
-                  //   // justifyContent: 'space-between',
-                  // }}
-                  // style={{ backgroundColor: 'red', alignItems: 'center'}}
-                  
+                {/* <DatePicker/> */}
+                <View
+                  style={{
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    marginBottom: wp(2),
+                  }}>
+                  <Text style={styles.title}>Date Of Birth</Text>
+                  <CustomButton
+                    icon={'close'}
+                    iconSize={20}
+                    iconColor={COLORS.blackTxtColor}
+                    onPress={toggleModal}
+                    containerStyle={styles.bottomSheetBtn}
+                  />
+                </View>
+
+                <DatePickr
+                  setDate={setSelectedDate}
+                  toggleModal={toggleModal}
                 />
               </View>
-              <CustomButton
-                containerStyle={styles.button}
-                text={'Save'}
-                textStyle={{
-                  fontFamily: fonts.Medium,
-                  color: COLORS.blackTxtColor,
-                }}
-                onPress={() => {
-                  handleInputChange('dob', date);
-                  toggleModal();
-                }}
-              />
             </BottomSheet>
             <Text style={styles.dob}>Select Gender</Text>
             <View style={styles.genderContainer}>
@@ -381,13 +394,17 @@ const QA = ({navigation}) => {
                   flex: 1,
                   marginRight: wp('2%'),
                 }}>
-                  {photos[0] ? <PhotoView photo={photos[0]}  /> : <Gender
-                  iconSize={wp('14%')}
-                  withOutbgIcon={'image-sharp'}
-                  onPress={toggleModal}
-                  // photo={photos[0] && photos[0]}
-                  containerStyle={styles.photoContainer}
-                />  }
+                {photos[0] ? (
+                  <PhotoView photo={photos[0]} />
+                ) : (
+                  <Gender
+                    iconSize={wp('14%')}
+                    withOutbgIcon={'image-sharp'}
+                    onPress={toggleModal}
+                    // photo={photos[0] && photos[0]}
+                    containerStyle={styles.photoContainer}
+                  />
+                )}
                 {/* <Gender
                   iconSize={wp('14%')}
                   withOutbgIcon={'image-sharp'}
@@ -403,20 +420,28 @@ const QA = ({navigation}) => {
                   gap: wp('2%'),
                   width: wp('27%'),
                 }}>
-                 {photos[1] ? <PhotoView photo={photos[1]}  /> : <Gender
-                  iconSize={wp('8%')}
-                  withOutbgIcon={'image-sharp'}
-                  onPress={toggleModal}
-                  // photo={photos[0] && photos[0]}
-                  containerStyle={styles.photoContainer}
-                />  }
-                 {photos[2] ? <PhotoView photo={photos[2]}  /> : <Gender
-                  iconSize={wp('8%')}
-                  withOutbgIcon={'image-sharp'}
-                  onPress={toggleModal}
-                  // photo={photos[0] && photos[0]}
-                  containerStyle={styles.photoContainer}
-                />  }
+                {photos[1] ? (
+                  <PhotoView photo={photos[1]} />
+                ) : (
+                  <Gender
+                    iconSize={wp('8%')}
+                    withOutbgIcon={'image-sharp'}
+                    onPress={toggleModal}
+                    // photo={photos[0] && photos[0]}
+                    containerStyle={styles.photoContainer}
+                  />
+                )}
+                {photos[2] ? (
+                  <PhotoView photo={photos[2]} />
+                ) : (
+                  <Gender
+                    iconSize={wp('8%')}
+                    withOutbgIcon={'image-sharp'}
+                    onPress={toggleModal}
+                    // photo={photos[0] && photos[0]}
+                    containerStyle={styles.photoContainer}
+                  />
+                )}
               </View>
             </View>
             <View
@@ -427,27 +452,39 @@ const QA = ({navigation}) => {
                 paddingHorizontal: wp('2%'),
                 gap: wp('2%'),
               }}>
-             {photos[3] ? <PhotoView photo={photos[3]}  /> : <Gender
+              {photos[3] ? (
+                <PhotoView photo={photos[3]} />
+              ) : (
+                <Gender
                   iconSize={wp('8%')}
                   withOutbgIcon={'image-sharp'}
                   onPress={toggleModal}
                   // photo={photos[3] && photos[3]}
                   containerStyle={styles.photoContainer}
-                />  }
-              {photos[4] ? <PhotoView photo={photos[4]}  /> : <Gender
+                />
+              )}
+              {photos[4] ? (
+                <PhotoView photo={photos[4]} />
+              ) : (
+                <Gender
                   iconSize={wp('8%')}
                   withOutbgIcon={'image-sharp'}
                   onPress={toggleModal}
                   // photo={photos[0] && photos[0]}
                   containerStyle={styles.photoContainer}
-                />  }
-              {photos[5] ? <PhotoView photo={photos[5]}  /> : <Gender
+                />
+              )}
+              {photos[5] ? (
+                <PhotoView photo={photos[5]} />
+              ) : (
+                <Gender
                   iconSize={wp('8%')}
                   withOutbgIcon={'image-sharp'}
                   onPress={toggleModal}
                   // photo={photos[0] && photos[0]}
                   containerStyle={styles.photoContainer}
-                />  }
+                />
+              )}
             </View>
 
             <BottomSheet isVisible={modalVisible} onClose={toggleModal}>
@@ -457,20 +494,20 @@ const QA = ({navigation}) => {
               {/* </View> */}
 
               <CustomButton
-                  icon={'close'}
-                  iconSize={20}
-                  iconColor={COLORS.blackTxtColor}
-                  onPress={toggleModal}
-                  containerStyle={styles.bottomSheetBtn}
-                />
+                icon={'close'}
+                iconSize={20}
+                iconColor={COLORS.blackTxtColor}
+                onPress={toggleModal}
+                containerStyle={styles.bottomSheetBtn}
+              />
               <View style={styles.bottomSheetInnerContainer}>
-                
                 <PhotoUpload
                   photos={photos}
                   setPhotos={newPhotos => {
                     setPhotos(newPhotos);
                     handleInputChange(currentQuestion.id, newPhotos);
                   }}
+                  toggleModal={toggleModal}
                 />
               </View>
               {/* <CustomButton
@@ -486,10 +523,24 @@ const QA = ({navigation}) => {
                 }}
               /> */}
             </BottomSheet>
+            <PopUpModal
+              visible={photoPopup}
+              svg={<Warning width={wp('20%')} height={hp('10%')} />}
+              btn1Press={() => {
+                setPhotoPopup(false);
+              }}
+              message="Add atleast one photo to continue"
+              btn1Txt="Ok"
+              btn1style={{backgroundColor: COLORS.primary1}}
+              textStyle={[styles.popStyle, {marginBottom: hp(5), marginTop: hp(2)}]}
+              btn2TxtStyle={{color: COLORS.primary1}}
+              heading={'Add Photo'}
+
+            />
           </View>
         )}
         {currentQuestion.type === 'slider' && (
-          <View style={styles.heightContainer} >
+          <View style={styles.heightContainer}>
             <View style={styles.heightBox}>
               <Text
                 style={styles.heightText}>{`${height} cm (${convertToFeetInches(
@@ -508,28 +559,14 @@ const QA = ({navigation}) => {
               thumbTintColor={COLORS.primary1}
               thumbImage={require('../../../../assets/svgs/thumb.png')}
               trackStyle={{height: 20}}
-              thumbStyle={styles.thumb}
-              
+              // thumbStyle={{height: 20, width: 20, borderWidth: 0}}
             />
           </View>
-        )}
-      </ScrollView>
-      <PopUpModal 
-       visible={locationPop}
-       svg={<Location width={wp('20%')} height={hp('10%')} />}
-       btn1Press={requestLocationPermission}
-       icon="alert" // You can change this to any Ionicons icon name
-       message='Enable location through which we can provide you with profile who are nearby and meet your preferences.'
-       btn1Txt="Use my current location"
-       btn1style={{backgroundColor: COLORS.primary1}}
-       btn2Txt={'Maybe, later'}
-       btn2Press={()=> setLocationPop(false)}
-       btn2style={{backgroundColor: COLORS.primary2, width: '100%', marginTop: wp(3)}}
-       textStyle ={styles.popStyle}
-       btn2TxtStyle={{color: COLORS.primary1}}
-      />
-      <Progress.Bar  progress={0.3} width={200} />
-      <View style={styles.buttonContainer}>
+        )} 
+</View>
+        {/* /////////////////////////////////////////////// Bottom Container////////////////////////////////////////////////// */}
+        <View style={{flex: 1, flexGrow: 0}} >
+        <View style={styles.buttonContainer}>
         <Text style={styles.heading}>
           {currentQuestion.id}
           <Text style={styles.questionNumber}>/{questions.length}</Text>
@@ -542,6 +579,46 @@ const QA = ({navigation}) => {
           containerStyle={[styles.button, {flexDirection: 'row'}]}
         />
       </View>
+      <View style={styles.progressBarContainer}>
+        <View
+          style={[
+            styles.progressBar,
+            {
+              width: `${
+                ((currentQuestionIndex + 1) / questions.length) * 100
+              }%`,
+            },
+          ]}
+        />
+      </View>
+        </View>
+
+        
+        
+      </ScrollView>
+      <PopUpModal
+        visible={locationPop}
+        svg={<Location width={wp('20%')} height={hp('10%')} />}
+        btn1Press={requestLocationPermission}
+        icon="alert" // You can change this to any Ionicons icon name
+        message="Enable location through which we can provide you with profile who are nearby and meet your preferences."
+        btn1Txt="Use my current location"
+        btn1style={{backgroundColor: COLORS.primary1}}
+        btn2Txt={'Maybe, later'}
+        btn2Press={() => {
+          setLocationPop(false)
+          navigation.navigate('mainStack')
+        }}
+        btn2style={{
+          backgroundColor: COLORS.primary2,
+          width: '100%',
+          marginTop: wp(3),
+        }}
+        textStyle={styles.popStyle}
+        btn2TxtStyle={{color: COLORS.primary1}}
+      />
+
+      
     </View>
   );
 };
@@ -549,11 +626,25 @@ const QA = ({navigation}) => {
 export default QA;
 
 const styles = StyleSheet.create({
+  progressBarContainer: {
+    width: '100%',
+    height: wp(1.4),
+    backgroundColor: COLORS.white,
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginVertical: wp(1),
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: COLORS.primary1,
+    borderRadius: 5,
+  },
   container: {
     flex: 1,
     paddingHorizontal: wp('6%'),
     paddingTop: hp('4%'),
     backgroundColor: COLORS.primary2,
+    paddingBottom: wp(8),
   },
   heading: {
     fontFamily: fonts.SemiBold,
@@ -589,10 +680,12 @@ const styles = StyleSheet.create({
   },
   bottomSheetInnerContainer: {
     // alignItems: 'center',
-    // backgroundColor: 'green'
+    // justifyContent: 'center',
+    // backgroundColor: 'green',
     paddingHorizontal: wp(3),
-    paddingVertical: wp(3),
-    marginBottom: wp(4),
+    // paddingVertical: wp(3),
+    // marginBottom: wp(4),
+    // width: '100%'
   },
   genderContainer: {
     flexDirection: 'row',
@@ -634,6 +727,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: hp('2%'),
+    
   },
   questionNumber: {
     fontFamily: fonts.Regular,
@@ -656,16 +750,16 @@ const styles = StyleSheet.create({
     padding: wp('2%'),
     marginBottom: hp('2%'),
     backgroundColor: COLORS.white,
-    marginTop: wp('20')
+    marginTop: wp('20'),
   },
   heightText: {
     fontSize: wp('5%'),
     color: '#000000',
     textAlign: 'center',
   },
-  heightContainer:{
-    paddingHorizontal: wp(3)
-  }, 
+  heightContainer: {
+    paddingHorizontal: wp(3),
+  },
   popStyle: {
     fontSize: wp('4%'),
     textAlign: 'center',
@@ -675,5 +769,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Lexend',
     lineHeight: wp('8%'),
     paddingHorizontal: wp('3%'),
-  }
+  },
+
+  title: {
+    fontSize: wp(5),
+    fontWeight: 'bold',
+    color: COLORS.blackTxtColor,
+  },
 });

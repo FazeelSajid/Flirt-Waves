@@ -6,5 +6,8 @@ export const COLORS = {
     lightTxtColor: '#575757',
     blackTxtColor: '#191919',
     lightGrayColor: '#D9D9D9',
-    darkGrayColor: '#868686'
+    darkGrayColor: '#868686',
+    lightBlackColor: '#353535',
+    activeNowBorder: '#039D00',
+    activeNowBg: '#039D0040'
 };

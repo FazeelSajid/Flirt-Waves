@@ -13,7 +13,7 @@ const BottomSheet = ({isVisible, onClose, children }) => {
     onBackdropPress={onClose}
     style={styles.modal}
     onSwipeComplete={onClose}
-    swipeDirection="down"
+    // swipeDirection="down"
   >
     <View style={styles.container}>
       
@@ -34,8 +34,9 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.white,
         borderTopLeftRadius: widthPercentageToDP('6%'),
         borderTopRightRadius:  widthPercentageToDP('6%'),
-        paddingTop: widthPercentageToDP('2%'),
+        // paddingTop: widthPercentageToDP('2%'),
         paddingHorizontal: widthPercentageToDP('4%'),
+        paddingVertical: widthPercentageToDP('4%'),
       },
       
 })
