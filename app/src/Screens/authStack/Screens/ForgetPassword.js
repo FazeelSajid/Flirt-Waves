@@ -103,6 +103,8 @@ const ForgetPassword = ({route, navigation}) => {
                   text={'Send Code'}
                   textStyle={[styles.btnText, {color: COLORS.blackTxtColor}]}
                   onPress={handleSubmit}
+                  pressedRadius={wp(3)}
+
                 />
               </>
             )}
@@ -123,6 +125,8 @@ const ForgetPassword = ({route, navigation}) => {
               text={'Verify'}
               textStyle={[styles.btnText, {color: COLORS.blackTxtColor}]}
               onPress={() => navigation.replace('forgetPass', {screen: 'reset'})}
+              pressedRadius={wp(3)}
+
             />
           </>
         ) : (
@@ -175,6 +179,8 @@ const ForgetPassword = ({route, navigation}) => {
                   text={'Reset Password'}
                   textStyle={[styles.btnText, {color: COLORS.blackTxtColor}]}
                   onPress={handleSubmit}
+                  pressedRadius={wp(3)}
+
                 />
               </>
             )}

@@ -25,8 +25,8 @@ const PopUpModal = ({ textStyle ,heading ,visible, onClose, icon, message, btn1T
           {heading && <Text style={styles.heading}>{heading}</Text>}
           <Text style={textStyle}>{message}</Text>
           {/* <View> */}
-          <CustomButton text={btn1Txt} onPress={btn1Press} containerStyle={[styles.button, btn1style]} textStyle={styles.buttonText} />
-          { btn2Txt && <CustomButton text={btn2Txt} onPress={btn2Press} containerStyle={[styles.button, btn2style]} textStyle={[styles.buttonText, btn2TxtStyle]} />}
+          <CustomButton text={btn1Txt} onPress={btn1Press} containerStyle={[styles.button, btn1style]} textStyle={styles.buttonText} pressedRadius={wp(3)} />
+          { btn2Txt && <CustomButton text={btn2Txt} onPress={btn2Press} containerStyle={[styles.button, btn2style]} textStyle={[styles.buttonText, btn2TxtStyle]} pressedRadius={wp(3)} />}
 
           {/* </View> */}
         </View>

@@ -24,13 +24,13 @@ const PhotoUpload = ({photos, setPhotos, toggleModal}) => {
     ImageCropPicker.openPicker({
       // width: 300,
       // height: 400,
-      cropperActiveWidgetColor: COLORS.primary1, // Example color
-      cropperStatusBarColor: COLORS.primary1,
-      cropperToolbarColor: COLORS.primary2,
-      cropperToolbarWidgetColor: COLORS.blackTxtColor,
-      cropperToolbarTitle: 'Edit Photo',
+      // cropperActiveWidgetColor: COLORS.primary1, // Example color
+      // cropperStatusBarColor: COLORS.primary1,
+      // cropperToolbarColor: COLORS.primary2,
+      // cropperToolbarWidgetColor: COLORS.blackTxtColor,
+      // cropperToolbarTitle: 'Edit Photo',
       // cropperCircleOverlay: true,
-      cropping: true,
+      // cropping: true,
       mediaType: 'photo',
     })
       .then(image => {
@@ -44,15 +44,16 @@ const PhotoUpload = ({photos, setPhotos, toggleModal}) => {
 
   const launchCam = () => {
     ImageCropPicker.openCamera({
+      useFrontCamera: true,
       // width: 300,
       // height: 400,
-      cropperActiveWidgetColor: COLORS.primary1, // Example color
-      cropperStatusBarColor: COLORS.primary1,
-      cropperToolbarColor: COLORS.primary2,
-      cropperToolbarWidgetColor: COLORS.primary1,
-      cropperToolbarTitle: 'Edit Photo',
-      cropperCircleOverlay: true,
-      cropping: true,
+      // cropperActiveWidgetColor: COLORS.primary1, // Example color
+      // cropperStatusBarColor: COLORS.primary1,
+      // cropperToolbarColor: COLORS.primary2,
+      // cropperToolbarWidgetColor: COLORS.primary1,
+      // cropperToolbarTitle: 'Edit Photo',
+      // cropperCircleOverlay: true,
+      // cropping: true,
     })
       .then(image => {
         setPhotos([...photos, image.path]);

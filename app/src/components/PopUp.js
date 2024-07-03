@@ -23,7 +23,7 @@ export default PopUp
 const styles = StyleSheet.create({
     popUp: {
       position: 'absolute',
-      top: hp('10%'),
+      top: hp('5%'),
       left: wp('5%'),
       right: wp('5%'),
       // backgroundColor: '#d4edda',
@@ -43,6 +43,8 @@ const styles = StyleSheet.create({
       },
       innerContainer:{
         paddingHorizontal: wp('3%'),
+        justifyContent: 'center'
+        
         // paddingVertical: hp('4%'),
       },
       heading: {

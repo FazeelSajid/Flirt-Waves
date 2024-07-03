@@ -100,6 +100,8 @@ const SignIn = ({navigation}) => {
               text={'Continue'}
               textStyle={[styles.btnText, {color: COLORS.blackTxtColor}]}
               onPress={handleSubmit}
+            pressedRadius={wp(3)}
+              
             />
           </View>
         )}

@@ -21,7 +21,7 @@ import CustomButton from '../../../../components/CustomButton';
 import {fonts} from '../../../../../config/Fonts';
 import EmojiModal from 'react-native-emoji-modal';
 
-const Chat = () => {
+const Chat = ({navigation}) => {
   const [messages, setMessages] = useState([]);
   const [isEmoji, setIsEmoji] = useState(false);
   const [inputText, setInputText] = useState('');
@@ -152,7 +152,7 @@ const Chat = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ChatHeader left={'chevron-left'} iconSize={35} img={imgs.user3} />
+      <ChatHeader left={'chevron-left'} iconSize={35} img={imgs.user3} leftOnpress={()=> navigation.goBack()} rightOnPress={()=>navigation.navigate('audioCall')} />
       <GiftedChat
         messages={messages}
         onSend={newMessages =>

@@ -1,8 +1,10 @@
 import {StyleSheet, Text, View, Pressable} from 'react-native';
 import React, {Children} from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 const CustomButton = ({
   containerStyle,
@@ -15,7 +17,8 @@ const CustomButton = ({
   icon,
   iconSize,
   iconColor,
-  pressedRadius
+  pressedRadius,
+  svg,
 }) => {
   return (
     <Pressable
@@ -30,15 +33,18 @@ const CustomButton = ({
         },
         pressed && {opacity: 0.5, borderRadius: pressedRadius},
       ]}>
+      {/* {svg && svg} */}
       {icon ? (
-        <>
-        <Icon name={icon} size={iconSize} color={iconColor} />
+  <>
+    <Icon name={icon} size={iconSize} color={iconColor} />
+    {text && <Text style={[textStyle, txtColor]}>{text}</Text>}
+  </>
+) : text ? (
+  <Text style={[textStyle, txtColor]}>{text}</Text>
+) : (
+ svg
+)}
 
- { text && <Text style={[textStyle, txtColor]}>{text}</Text>}
-      </>
-      ) : (
-        <Text style={[textStyle, txtColor, ]}>{text}</Text>
-      )}
     </Pressable>
   );
 };
@@ -48,7 +54,7 @@ export default CustomButton;
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    borderRadius: wp('2.5%'),
+    borderRadius: wp('3%'),
     // padding: 8,
     // borderRadius: 4
   },

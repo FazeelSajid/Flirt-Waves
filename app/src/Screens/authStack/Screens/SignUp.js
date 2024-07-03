@@ -37,12 +37,14 @@ const SignUp = ({navigation}) => {
     <ScrollView style={styles.container}>
       <CustomHeader
         left={'chevron-left'}
-        iconSize={wp('5%')}
+        iconSize={wp('10%')}
         leftIconColor={COLORS.blackTxtColor}
         leftOnpress={() => navigation.goBack()}
       />
       <Logos />
       <Text style={styles.heading}>Sign Up</Text>
+      <View style={{flexGrow: 1}} >
+
       <Formik
         initialValues={{email: 'fazeel@gmail.com', password: 'fazeel', confirmPassword: 'fazeel'}}
         validationSchema={validationSchema}
@@ -111,6 +113,8 @@ const SignUp = ({navigation}) => {
               text={'Continue'}
               textStyle={[styles.btnText, {color: COLORS.blackTxtColor}]}
               onPress={handleSubmit}
+            pressedRadius={wp(3)}
+
               />
           </View>
         )}
@@ -135,6 +139,8 @@ const SignUp = ({navigation}) => {
         containerStyle={styles.continueWith}
         />
       )}
+      </View>
+
       <View style={styles.alreadyContainer}>
         <Text style={styles.alreadyTxt}>Already have an account?</Text>
         <CustomButton
@@ -157,7 +163,7 @@ const styles = StyleSheet.create({
     // alignItems:'center',
     backgroundColor: COLORS.primary2,
     paddingHorizontal: wp('6%'),
-    paddingTop: hp('3%'),
+    paddingTop: hp('4%'),
   },
   heading: {
     marginTop: hp('7%'),
