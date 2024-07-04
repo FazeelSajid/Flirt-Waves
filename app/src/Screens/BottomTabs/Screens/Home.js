@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   Switch,
 } from 'react-native';
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useMemo, useCallback} from 'react';
 import LocationCard from '../../../components/LocationCard';
 import {COLORS} from '../../../../config/COLORS';
 import {
@@ -23,13 +23,20 @@ import {imgs} from '../../../assets/Imgs/Img';
 import Location1 from '../../../assets/svgs/location1.svg';
 import Thumb from '../../../assets/svgs/Thumb.svg';
 import Filter from '../../../assets/svgs/filter.svg';
-import BottomSheet from 'react-native-gesture-bottom-sheet';
+// import BottomSheet from 'react-native-gesture-bottom-sheet';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import Gender from '../../../components/Gender';
-
+import LoaderKit from 'react-native-loader-kit';
 import svg from '../../../assets/svgs/Svg';
 import TxtInput from '../../../components/TxtInput';
 import CustomButton from '../../../components/CustomButton';
+import {users} from '../../../../config/Data';
+import {
+  BottomSheetModal,
+  BottomSheetView,
+  BottomSheetModalProvider,
+  BottomSheetScrollView
+} from '@gorhom/bottom-sheet';
 
 const Home = ({navigation}) => {
   const [isFavourite, setIsfavorite] = useState(false);
@@ -41,8 +48,20 @@ const Home = ({navigation}) => {
   const [isOnline, setIsOnline] = useState(false);
   const [distance, setDistance] = useState('');
   const [city, setCity] = useState('');
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [filterApplied, setFilterApplied] = useState(false);
   const handleApplyFilters = () => {
+    // bottomSheet.current.close();
+    setFilterApplied(true)
+    bottomSheetModalRef.current?.dismiss();
+    setTimeout(() => {
+      setIsLoading(true);
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+    }, 2000);
+
     const filters = {
       ageRange,
       selectedGender,
@@ -52,6 +71,8 @@ const Home = ({navigation}) => {
       city,
     };
     console.log('Applied Filters:', filters);
+
+    console.log(bottomSheet.current);
     // Save or apply filters logic here
   };
 
@@ -66,196 +87,261 @@ const Home = ({navigation}) => {
   const navigateTo = (screen, params) => {
     navigation.navigate(screen, params);
   };
+
+   // ref
+   const bottomSheetModalRef = useRef(null);
+
+   // variables
+   const snapPoints = useMemo(() => ['50%', '90%'], []);
+ 
+   // callbacks
+   const handlePresentModalPress = useCallback(() => {
+     bottomSheetModalRef.current?.present();
+   }, []);
+   const handleSheetChanges = useCallback((index) => {
+     console.log('handleSheetChanges', index);
+   }, []);
   return (
-    <SafeAreaView style={[styles.container]}>
-      <StatusBar
-        translucent={true}
-        backgroundColor="transparent"
-        barStyle="dark-content"
-      />
-      <LocationCard
-        leftSvg={<Location1 width={wp('5%')} height={hp('4%')} />}
-        rightSvg={<Filter width={wp('5%')} height={hp('4%')} />}
-        // leftIcon={'map-marker'}
-        text1={'Your Location'}
-        txt1style={styles.LocationCardText1}
-        txt2style={styles.LocationCardText2}
-        text2={'12345, New York, USA'}
-        // rightIcon={'filter'}
-        containerStyle={{marginBottom: hp('5%')}}
-        rigntOnpress={() => bottomSheet.current.show()}
-      />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{paddingRight: wp(3)}}>
-        <PeopleCard
-          img={imgs.user1}
-          favIconPress={() => toggle(isFavourite, setIsfavorite)}
-          isFavourite={isFavourite}
-          chatIconPress={() => navigateTo('chat', {img: imgs.user1})}
-          isVerified={true}
-          distance={'1.3 km away'}
-          name={'Rosie'}
-          age={'20'}
+    <BottomSheetModalProvider>
+      <SafeAreaView style={[styles.container]}>
+        <StatusBar
+          translucent={true}
+          backgroundColor="transparent"
+          barStyle="dark-content"
         />
-        <PeopleCard
-          img={imgs.user2}
-          favIconPress={() => toggle(isFavourite, setIsfavorite)}
-          isFavourite={isFavourite}
-          chatIconPress={() => navigateTo('chat', {img: imgs.user2})}
-          isVerified={true}
-          distance={'1.3 km away'}
-          name={'Olivia'}
-          age={'22'}
+        <LocationCard
+          leftSvg={<Location1 width={wp('5%')} height={hp('4%')}  />}
+          rightSvg={<Filter width={wp('5%')} height={hp('4%')} fill={COLORS.blackTxtColor} />}
+          // leftIcon={'map-marker'}
+          text1={'Your Location'}
+          txt1style={styles.LocationCardText1}
+          txt2style={styles.LocationCardText2}
+          text2={'12345, New York, USA'}
+          // rightIcon={'filter'}
+          containerStyle={{marginBottom: hp('5%')}}
+          leftOnpress={() => navigateTo('map')}
+          rigntOnpress={handlePresentModalPress}
         />
-        <PeopleCard
-          img={imgs.user3}
-          favIconPress={() => toggle(isFavourite, setIsfavorite)}
-          isFavourite={isFavourite}
-          chatIconPress={() => navigateTo('chat', {img: imgs.user3})}
-          isVerified={true}
-          distance={'1.3 km away'}
-          name={'Sophia'}
-          age={'26'}
-        />
-        <PeopleCard
-          img={imgs.user4}
-          favIconPress={() => toggle(isFavourite, setIsfavorite)}
-          isFavourite={isFavourite}
-          chatIconPress={() => navigateTo('chat', {img: imgs.user4})}
-          isVerified={true}
-          distance={'1.3 km away'}
-          name={'Emily'}
-          age={'30'}
-        />
-      </ScrollView>
-      <BottomSheet hasDraggableIcon ref={bottomSheet} height={hp(95)} draggable>
-        <ScrollView style={styles.btmSheetContainer}>
-          <Text style={styles.btmSheetHeading}>Apply Filter</Text>
-          <Text style={styles.label}>Age Range</Text>
-          <Text
-            style={
-              styles.ageRange
-            }>{`${ageRange[0]} - ${ageRange[1]} years old`}</Text>
-          <MultiSlider
-            values={ageRange}
-            onValuesChange={onValuesChange}
-            min={18}
-            max={60}
-            step={1}
-            selectedStyle={{
-              backgroundColor: COLORS.primary1,
-            }}
-            unselectedStyle={{
-              backgroundColor: COLORS.lightGrayColor,
-            }}
-            trackStyle={{
-              height: wp(1),
-            }}
-            markerStyle={{
-              height: 14,
-              width: 20,
-              backgroundColor: COLORS.primary1,
-              borderWidth: 0,
-            }}
-            customMarkerLeft={
-              <Image source={imgs.user1} width={wp(5)} height={hp(4)} />
-            }
-            customMarkerRight={<Thumb width={wp(5)} height={wp(5)} />}
-          />
-          <Text style={styles.label}>Gender</Text>
+        {isLoading ? (
+          <View
+            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <LoaderKit
+              style={{width: wp(20), height: wp(20)}}
+              name={'BallSpinFadeLoader'} // Optional: see list of animations below
+              color={COLORS.lightBlackColor} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+            />
+            <Text
+              style={{
+                color: COLORS.blackTxtColor,
+                fontSize: wp(5),
+                fontFamily: fonts.SemiBold,
+              }}>
+              Applying Filter
+            </Text>
+          </View>
+        ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{paddingRight: wp(3)}}>
+            <PeopleCard
+              img={imgs.user1}
+              favIconPress={() => toggle(isFavourite, setIsfavorite)}
+              isFavourite={isFavourite}
+              chatIconPress={() => navigateTo('chat', {img: imgs.user1})}
+              isVerified={true}
+              distance={'1.3 km away'}
+              name={'Rosie'}
+              age={'20'}
+              onPress={() => navigateTo('userDetails')}
+              // activeNow={true}
+            />
+            <PeopleCard
+              img={imgs.user2}
+              favIconPress={() => toggle(isFavourite, setIsfavorite)}
+              isFavourite={isFavourite}
+              chatIconPress={() => navigateTo('chat', {img: imgs.user2})}
+              // isVerified={true}
+              distance={'1.3 km away'}
+              name={'Olivia'}
+              age={'22'}
+              onPress={() => navigateTo('userDetails')}
+              activeNow={true}
+            />
+            <PeopleCard
+              img={imgs.user3}
+              favIconPress={() => toggle(isFavourite, setIsfavorite)}
+              isFavourite={isFavourite}
+              chatIconPress={() => navigateTo('chat', {img: imgs.user3})}
+              isVerified={true}
+              distance={'1.3 km away'}
+              name={'Sophia'}
+              onPress={() => navigateTo('userDetails')}
+              age={'26'}
+            />
+            <PeopleCard
+              img={imgs.user4}
+              favIconPress={() => toggle(isFavourite, setIsfavorite)}
+              isFavourite={isFavourite}
+              chatIconPress={() => navigateTo('chat', {img: imgs.user4})}
+              isVerified={true}
+              distance={'1.3 km away'}
+              name={'Emily'}
+              age={'30'}
+              onPress={() => navigateTo('userDetails')}
+              activeNow={true}
+            />
+          </ScrollView>
+        )}
 
-          <View style={styles.genderContainer}>
-            <Gender
-              gender={'Male'}
-              icon={'male'}
-              isSelected={selectedGender === 'Male'}
-              onPress={gender => {
-                setSelectedGender(gender);
+        {/* <BottomSheet
+          hasDraggableIcon
+          ref={bottomSheet}
+          height={hp(90)}
+          draggable> */}
+          <BottomSheetModal
+          ref={bottomSheetModalRef}
+          index={0}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+        >
+
+          <BottomSheetScrollView style={styles.btmSheetContainer}>
+            <Text style={styles.btmSheetHeading}>Apply Filter</Text>
+            <Text style={styles.label}>Age Range</Text>
+            <Text
+              style={
+                styles.ageRange
+              }>{`${ageRange[0]} - ${ageRange[1]} years old`}</Text>
+            <MultiSlider
+              values={ageRange}
+              onValuesChange={onValuesChange}
+              min={18}
+              max={60}
+              step={1}
+              selectedStyle={{
+                backgroundColor: COLORS.primary1,
               }}
-              containerStyle={styles.gender}
-            />
-            <Gender
-              gender={'Female'}
-              icon={'female'}
-              isSelected={selectedGender === 'Female'}
-              onPress={gender => {
-                setSelectedGender(gender);
-                
+              unselectedStyle={{
+                backgroundColor: COLORS.lightGrayColor,
               }}
-              containerStyle={styles.gender}
+              trackStyle={{
+                height: wp(1),
+              }}
+              markerStyle={{
+                height: 14,
+                width: 20,
+                backgroundColor: COLORS.primary1,
+                borderWidth: 0,
+              }}
+              customMarker={props => {
+                return (
+                  <View style={styles.customMarker}>
+                    <Thumb width={wp(5)} height={wp(5)} />
+                  </View>
+                );
+              }}
             />
-          </View>
+            <Text style={styles.label}>Gender</Text>
 
-          <Text style={styles.label}>Preference</Text>
-          <View style={styles.preferenceContainer}>
-            <TouchableOpacity
-              onPress={() => setPreference('relationship')}
-              style={[
-                styles.preferenceButton,
-                preference === 'relationship' &&
-                  styles.preferenceButtonSelected,
-              ]}>
-              <Text style={styles.preferenceTxt}>A Relationship</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setPreference('casual')}
-              style={[
-                styles.preferenceButton,
-                preference === 'casual' && styles.preferenceButtonSelected,
-              ]}>
-              <Text style={styles.preferenceTxt}>Nothing Serious</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setPreference('unknown')}
-              style={[
-                styles.preferenceButton,
-                preference === 'unknown' && styles.preferenceButtonSelected,
-              ]}>
-              <Text style={styles.preferenceTxt}>I'll know when I find it</Text>
-            </TouchableOpacity>
-          </View>
+            <View style={styles.genderContainer}>
+              <Gender
+                gender={'Male'}
+                icon={'male'}
+                isSelected={selectedGender === 'Male'}
+                onPress={gender => {
+                  setSelectedGender(gender);
+                }}
+                containerStyle={styles.gender}
+              />
+              <Gender
+                gender={'Female'}
+                icon={'female'}
+                isSelected={selectedGender === 'Female'}
+                onPress={gender => {
+                  setSelectedGender(gender);
+                }}
+                containerStyle={styles.gender}
+              />
+            </View>
 
-          <View style={styles.onlineContainer}>
-            <Text style={styles.label}>Online</Text>
-            <Switch
-              value={isOnline}
-              onValueChange={setIsOnline}
-              trackColor={{false: COLORS.lightGrayColor, true: COLORS.primary1}}
-              thumbColor={COLORS.primary2}
+            <Text style={styles.label}>Preference</Text>
+            <View style={styles.preferenceContainer}>
+              <TouchableOpacity
+                onPress={() => setPreference('relationship')}
+                style={[
+                  styles.preferenceButton,
+                  preference === 'relationship' &&
+                    styles.preferenceButtonSelected,
+                ]}>
+                <Text style={styles.preferenceTxt}>A Relationship</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setPreference('casual')}
+                style={[
+                  styles.preferenceButton,
+                  preference === 'casual' && styles.preferenceButtonSelected,
+                ]}>
+                <Text style={styles.preferenceTxt}>Nothing Serious</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setPreference('unknown')}
+                style={[
+                  styles.preferenceButton,
+                  preference === 'unknown' && styles.preferenceButtonSelected,
+                ]}>
+                <Text style={styles.preferenceTxt}>
+                  I'll know when I find it
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.onlineContainer}>
+              <Text style={styles.label}>Online</Text>
+              <Switch
+                value={isOnline}
+                onValueChange={setIsOnline}
+                trackColor={{
+                  false: COLORS.lightGrayColor,
+                  true: COLORS.primary1,
+                }}
+                thumbColor={COLORS.primary2}
+              />
+            </View>
+
+            <Text style={styles.label}>Distance</Text>
+            <TxtInput
+              containerStyle={styles.txtInput}
+              placeholder={'Enter Distance'}
+              placeholderTextColor={COLORS.darkGrayColor}
+              onChangeText={setDistance}
+              value={distance}
             />
-          </View>
 
-          <Text style={styles.label}>Distance</Text>
-          <TxtInput
-            containerStyle={styles.txtInput}
-            placeholder={'Enter Distance'}
-            placeholderTextColor={COLORS.darkGrayColor}
-            onChangeText={setDistance}
-            value={distance}
-          />
+            <Text style={styles.label}>City</Text>
+            <TxtInput
+              containerStyle={styles.txtInput}
+              placeholder={'City Name'}
+              placeholderTextColor={COLORS.darkGrayColor}
+              onChangeText={setCity}
+              value={city}
+            />
 
-          <Text style={styles.label}>City</Text>
-          <TxtInput
-            containerStyle={styles.txtInput}
-            placeholder={'City Name'}
-            placeholderTextColor={COLORS.darkGrayColor}
-            onChangeText={setCity}
-            value={city}
-          />
+            <CustomButton
+              containerStyle={[
+                styles.btn,
+                {backgroundColor: COLORS.primary1, marginBottom: wp('5%')},
+              ]}
+              text={'Continue'}
+              textStyle={[styles.btnText, {color: COLORS.blackTxtColor}]}
+              onPress={handleApplyFilters}
+              pressedRadius={wp(3)}
+            />
+          </BottomSheetScrollView>
 
-          <CustomButton
-            containerStyle={[
-              styles.btn,
-              {backgroundColor: COLORS.primary1, marginBottom: wp('5%')},
-            ]}
-            text={'Continue'}
-            textStyle={[styles.btnText, {color: COLORS.blackTxtColor}]}
-            onPress={handleApplyFilters}
-          />
-        </ScrollView>
-      </BottomSheet>
-    </SafeAreaView>
+          </BottomSheetModal>
+        {/* </BottomSheet> */}
+      </SafeAreaView>
+    </BottomSheetModalProvider>
   );
 };
 

@@ -24,14 +24,16 @@ import Gender from '../../../../components/Gender';
 import {fonts} from '../../../../../config/Fonts';
 import PhotoUpload from '../../../../components/PhotoUpload';
 import ContinueWith from '../../../../components/ContinueWith';
-import Slider from '@react-native-community/slider';
 import PopUpModal from '../../../../components/PopUpModal';
 import Location from '../../../../assets/svgs/location.svg';
 import Warning from '../../../../assets/svgs/Warning.svg';
+import Thumb from '../../../../assets/svgs/Thumb.svg';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 import PhotoView from '../../../../components/PhotoView';
 import DatePickr from '../../../../components/DatePickr';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
+
 
 const questions = [
   {
@@ -194,13 +196,14 @@ const QA = ({navigation}) => {
 
   // Handle skipping a question
   const handleSkip = (questionId) => {
-    if (currentQuestion.id > questions.length-1) {
-      handleNext()
-      console.log('next');
-    } else {
-      setResponses({...responses, [questionId]: 'Skipped'});
-    handleNext();
-    }
+    // if (currentQuestion.id > questions.length-1) {
+    //   handleNext()
+    //   console.log('next');
+    // } else {
+    //   setResponses({...responses, [questionId]: 'Skipped'});
+    // handleNext();
+    // }
+    setLocationPop(true);
   };
 
   // Handle input change
@@ -261,9 +264,9 @@ const QA = ({navigation}) => {
         leftOnpress={handlePrev}
         rightText={'Skip'}
         rightTextStyle={{
-          fontFamily: fonts.Bold,
+          fontFamily: fonts.SemiBold,
           color: COLORS.blackTxtColor,
-          fontSize: wp(4),
+          fontSize: wp(4.5),
           textDecorationLine: 'underline'
         }}
         rightOnPress={handleSkip}
@@ -292,14 +295,14 @@ const QA = ({navigation}) => {
               value={responses['name'] || ''}
               onChangeText={text => handleInputChange('name', text)}
               placeholder="Enter Name"
-              placeholderTextColor={COLORS.lightGrayColor}
+              placeholderTextColor={COLORS.darkGrayColor}
             />
             <Text style={styles.dob}>Date Of Birth</Text>
             <TouchableOpacity onPress={toggleModal}>
               <Text style={styles.dateText}>{selectedDate}</Text>
             </TouchableOpacity>
             <BottomSheet isVisible={modalVisible} onClose={toggleModal}>
-              <View></View>
+              {/* <View></View> */}
               <View style={styles.bottomSheetInnerContainer}>
                 {/* <DatePicker/> */}
                 <View
@@ -547,7 +550,38 @@ const QA = ({navigation}) => {
                 height,
               )})`}</Text>
             </View>
-            <Slider
+            <MultiSlider
+            values={[height]}
+            onValuesChange={setHeight}
+            min={100}
+            max={200}
+            step={1}
+            selectedStyle={{
+              backgroundColor: COLORS.primary1,
+            }}
+            unselectedStyle={{
+              backgroundColor: COLORS.white,
+            }}
+            trackStyle={{
+              height: wp(1.5),
+              borderRadius: wp(1),
+            }}
+            // markerStyle={{
+            //   height: 14,
+            //   width: 20,
+            //   backgroundColor: COLORS.primary1,
+            //   borderWidth: 0,
+            // }}
+            customMarker={props => {
+              return (
+                <View style={{alignItems: 'center',  paddingTop: wp(1)}} >
+                   <Thumb width={wp(7)} height={wp(7)} />
+                </View>
+              );
+            }}
+            
+          />
+            {/* <Slider
               style={styles.slider}
               minimumValue={100}
               maximumValue={220}
@@ -560,7 +594,7 @@ const QA = ({navigation}) => {
               thumbImage={require('../../../../assets/svgs/thumb.png')}
               trackStyle={{height: 20}}
               // thumbStyle={{height: 20, width: 20, borderWidth: 0}}
-            />
+            /> */}
           </View>
         )} 
 </View>
@@ -573,10 +607,12 @@ const QA = ({navigation}) => {
         </Text>
         <CustomButton
           icon={'chevron-right'}
-          iconSize={wp('6%')}
+          iconSize={wp('8%')}
           iconColor={COLORS.blackTxtColor}
           onPress={handleNext}
-          containerStyle={[styles.button, {flexDirection: 'row'}]}
+          containerStyle={[styles.button]}
+          pressedRadius={wp(3)}
+
         />
       </View>
       <View style={styles.progressBarContainer}>
@@ -647,8 +683,8 @@ const styles = StyleSheet.create({
     paddingBottom: wp(8),
   },
   heading: {
-    fontFamily: fonts.SemiBold,
-    fontSize: wp('5%'),
+    fontFamily: fonts.Medium,
+    fontSize: wp('6%'),
     color: COLORS.blackTxtColor,
     textAlign: 'center',
   },
@@ -666,8 +702,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     padding: wp('4%'),
     borderRadius: wp('2%'),
-    textAlign: 'center',
+    // textAlign: 'center',
     color: COLORS.blackTxtColor,
+    fontFamily: fonts.Regular,
   },
   bottomSheetBtn: {
     alignSelf: 'flex-end',
@@ -735,8 +772,8 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: COLORS.primary1,
-    paddingVertical: wp('3%'),
-    paddingHorizontal: wp('4%'),
+    paddingVertical: wp('2%'),
+    paddingHorizontal: wp('3%'),
   },
   slider: {
     // width: wp('100%'),

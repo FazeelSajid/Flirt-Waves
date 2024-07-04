@@ -20,7 +20,7 @@ const ReviewNaccept = ({navigation}) => {
       />
       <CustomHeader
         left={'chevron-left'}
-        iconSize={wp('6%')}
+        iconSize={wp('8%')}
         leftIconColor={COLORS.blackTxtColor}
         leftOnpress={() => navigation.goBack()}
       />
@@ -82,12 +82,15 @@ const ReviewNaccept = ({navigation}) => {
           access to or control over these cookies that are used by third-party
           advertisers.
         </Text>
-        <View>
+       
+      </ScrollView>
+      <View style={{marginTop: wp(2)}} >
           <CustomButton
             containerStyle={[styles.btn, {backgroundColor: COLORS.primary1}]}
             text={'Accept'}
             textStyle={[styles.btnText, {color: COLORS.blackTxtColor}]}
             onPress={()=> navigation.navigate('signup')}
+            pressedRadius={wp(3)}
           />
           <CustomButton
             containerStyle={[
@@ -96,9 +99,10 @@ const ReviewNaccept = ({navigation}) => {
             ]}
             text={'Continue without accepting'}
             textStyle={[styles.btnText, {color: COLORS.primary1}]}
+            pressedRadius={wp(3)}
+            onPress={()=> navigation.navigate('signup')}
           />
         </View>
-      </ScrollView>
     </View>
   );
 };

@@ -10,6 +10,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Chat from '../assets/svgs/chat.svg';
 import {COLORS} from '../../config/COLORS';
 import CustomButton from './CustomButton';
 import {fonts} from '../../config/Fonts';
@@ -27,9 +28,10 @@ const PeopleCard = ({
   name,
   age,
   activeNow,
+  onPress
 }) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity activeOpacity={0.7} style={styles.container} onPress={onPress} >
       <ImageBackground source={img} style={styles.img} >
         <LinearGradient start={{x: 0, y: 0.6}} 
 
@@ -43,7 +45,7 @@ const PeopleCard = ({
             </View>
             <CustomButton
               onPress={favIconPress}
-              icon={isFavourite ? 'cards-heart-outline' : 'cards-heart'}
+              icon={isFavourite ?  'cards-heart'  : 'cards-heart-outline'}
               containerStyle={styles.iconContainer}
               iconSize={wp(5)}
               iconColor={COLORS.primary1}
@@ -63,19 +65,18 @@ const PeopleCard = ({
                     color={COLORS.activeNowBorder}
                   />
                 <Text style={styles.activeNow}>
-                  Active Now
+                  {activeNow ?'Active Now' : 'Now Offline'}
                 </Text>
               </View>
             </View>
 
             <View style={{justifyContent: 'flex-end'}}>
               <CustomButton
-                icon={'wechat'}
-                iconSize={wp(7)}
-                iconColor={COLORS.white}
+                svg={<Chat width={wp(6)} height={wp(6)} />}
                 containerStyle={[
                   styles.iconContainer,
-                  {backgroundColor: COLORS.primary1},
+                  {backgroundColor: COLORS.primary1}
+                 
                 ]}
                 onPress={chatIconPress}
                 pressedRadius={wp('5%')}
@@ -84,7 +85,7 @@ const PeopleCard = ({
           </View>
         </LinearGradient>
       </ImageBackground>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -93,9 +94,10 @@ export default PeopleCard;
 const styles = StyleSheet.create({
   iconContainer: {
     justifyContent: 'center',
-    padding: wp(1.3),
+    padding: wp(2),
     backgroundColor: COLORS.white,
     borderRadius: wp('5%'),
+    
   },
   img: {
     width: wp('85%'),

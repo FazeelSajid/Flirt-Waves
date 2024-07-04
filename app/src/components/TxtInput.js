@@ -81,7 +81,7 @@ const TxtInput = ({
             <Icon
               name={isPasswordVisible ? 'eye-slash' : 'eye'}
               size={20}
-              color={COLORS.lightTxtColor}
+              color={ isPasswordVisible? COLORS.primary1: COLORS.lightTxtColor}
             />
           </TouchableOpacity>
         )}

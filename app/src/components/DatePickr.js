@@ -33,7 +33,7 @@ const DatePickr = ({date, setDate, toggleModal}) => {
 
   // console.log(selectedDay, selectedMonth, selectedYear);
   // setDate(`${selectedDay}-${selectedMonth}-${selectedYear}`);
-  console.log(years.indexOf(selectedYear.toString()));
+  // console.log(years.indexOf(selectedYear.toString()));
 
   return (
   <View>
@@ -50,8 +50,8 @@ const DatePickr = ({date, setDate, toggleModal}) => {
         isCyclic={true}
         indicatorColor={COLORS.primary1}
         indicatorWidth={wp(1)}
-        itemTextSize={wp(5)}
-        selectedItemTextSize={wp(5)}
+        itemTextSize={wp(6)}
+        selectedItemTextSize={wp(6)}
       />
       <WheelPicker
         selectedItem={selectedMonth-1}
@@ -64,8 +64,8 @@ const DatePickr = ({date, setDate, toggleModal}) => {
         isCyclic={true}
         indicatorColor={COLORS.primary1}
         indicatorWidth={wp(1)}
-        itemTextSize={wp(5)}
-        selectedItemTextSize={wp(5)}
+        itemTextSize={wp(6)}
+        selectedItemTextSize={wp(6)}
       />
       <WheelPicker
         selectedItem={years.indexOf(selectedYear.toString())}
@@ -78,8 +78,9 @@ const DatePickr = ({date, setDate, toggleModal}) => {
         isCyclic={true}
         indicatorColor={COLORS.primary1}
         indicatorWidth={wp(1)}
-        itemTextSize={wp(5)}
-        selectedItemTextSize={wp(5)}
+        itemTextSize={wp(6)}
+        selectedItemTextSize={wp(6)}
+        
         
         />
     </View>

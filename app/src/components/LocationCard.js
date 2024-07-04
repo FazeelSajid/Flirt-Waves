@@ -7,14 +7,15 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {COLORS} from '../../config/COLORS';
 
-const LocationCard = ({text1, leftIcon, text2, txt1style, txt2style, rightIcon, containerStyle, rigntOnpress, rightSvg, leftSvg}) => {
+const LocationCard = ({text1,leftOnpress, leftIcon, text2, txt1style, txt2style, rightIcon, containerStyle, rigntOnpress, rightSvg, leftSvg}) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={{flexDirection: 'row'}}>
-        <View style={styles.iconContainer}>
-          {leftSvg}
-         {leftIcon && <Icon name={leftIcon} size={wp('7%')} color={COLORS.white} />}
-        </View>
+      <TouchableOpacity style={styles.iconContainer} onPress={leftOnpress} >
+        {leftSvg}
+        {leftIcon && <Icon name={leftIcon} size={wp('7%')} color={COLORS.white} />}
+      </TouchableOpacity>
+        
         <View style={{paddingHorizontal: wp(3), paddingVertical: hp('0.5')}}>
           <Text style={txt1style}>{text1}</Text>
           <Text style={txt2style}>{text2}</Text>

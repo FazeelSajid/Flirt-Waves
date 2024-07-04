@@ -6,6 +6,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import CustomButton from './CustomButton';
+import { fonts } from '../../config/Fonts';
 
 const CustomHeader = ({
   right,
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
     fontSize: hp(3),
     fontWeight: '600',
     lineHeight: wp(6),
+    fontFamily: fonts.Regular
   },
   iconBtn: {},
 });

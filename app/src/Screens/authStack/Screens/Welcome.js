@@ -81,6 +81,7 @@ const Welcome = ({navigation}) => {
           <ContinueWith
             text={'Connection Problem?'}
             textStyle={styles.Problem}
+            containerStyle={{marginBottom:wp(2) }}
           />
         </View>
       </View>

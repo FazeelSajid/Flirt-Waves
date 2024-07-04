@@ -9,11 +9,11 @@ import MainStack from './app/src/Screens/mainStack/MainStack';
 
 const App = () => {
   return (
-  //  <GestureHandlerRootView style={{flex: 1}}>
+   <GestureHandlerRootView style={{flex: 1}}>
     <NavigationContainer>
-      <MainStack/>
+      <AuthStack/>
     </NavigationContainer>
-  //  </GestureHandlerRootView>
+   </GestureHandlerRootView>
     
   )
 }
