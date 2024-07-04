@@ -72,6 +72,7 @@ const AudioCall = ({name = 'Olivia', timmer = '01:00:48 ', navigation}) => {
 
       {isMuted && (
         <Modal transparent={true} animationType="fade">
+          <StatusBar backgroundColor="rgba(0,0,0,0.5)" />
           <View style={styles.overlay}>
             <View style={styles.mutedView}>
               <Text style={styles.overlayText}>Call Muted</Text>

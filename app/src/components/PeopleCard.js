@@ -92,13 +92,6 @@ const PeopleCard = ({
 export default PeopleCard;
 
 const styles = StyleSheet.create({
-  iconContainer: {
-    justifyContent: 'center',
-    padding: wp(2),
-    backgroundColor: COLORS.white,
-    borderRadius: wp('5%'),
-    
-  },
   img: {
     width: wp('85%'),
     height: wp('90%'),
@@ -126,6 +119,13 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: wp(3),
     fontFamily: fonts.Regular,
+  },
+  iconContainer: {
+    justifyContent: 'center',
+    padding: wp(2),
+    backgroundColor: COLORS.white,
+    borderRadius: wp('5%'),
+    
   },
   infoContainer: {
     color: COLORS.primary1,
@@ -162,6 +162,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', 
     borderRadius: wp(3),
     padding: wp('3%'),
-
   }
 });

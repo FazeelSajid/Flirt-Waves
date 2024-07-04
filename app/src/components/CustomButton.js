@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Pressable} from 'react-native';
+import {StyleSheet, Text, View, Pressable, Image} from 'react-native';
 import React, {Children} from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
@@ -19,6 +19,8 @@ const CustomButton = ({
   iconColor,
   pressedRadius,
   svg,
+  img,
+  imgStyle
 }) => {
   return (
     <Pressable
@@ -41,8 +43,11 @@ const CustomButton = ({
   </>
 ) : text ? (
   <Text style={[textStyle, txtColor]}>{text}</Text>
-) : (
+) : svg ? (
  svg
+): (
+  <Image source={img} style={imgStyle} />
+  
 )}
 
     </Pressable>

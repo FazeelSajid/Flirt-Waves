@@ -8,6 +8,8 @@ import UserDetails from './Screens/Others/UserDetails'
 import Report from './Screens/Others/Report'
 import DescribeReport from './Screens/Others/DescribeReport'
 import AudioCall from './Screens/Others/AudioCall'
+import Search from './Screens/Others/Search'
+import Details from './Screens/Others/Details'
 
 const Stack = createNativeStackNavigator()
 const MainStack = () => {
@@ -22,6 +24,8 @@ const MainStack = () => {
       <Stack.Screen name='report' component={Report} />
       <Stack.Screen name='describe' component={DescribeReport} />
       <Stack.Screen name='userDetails' component={UserDetails} />
+      <Stack.Screen name='search' component={Search} />
+      <Stack.Screen name='details' component={Details} />
       
     </Stack.Navigator>
   )
