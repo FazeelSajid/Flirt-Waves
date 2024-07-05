@@ -49,10 +49,9 @@ const Home = ({navigation}) => {
   const [distance, setDistance] = useState('');
   const [city, setCity] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [filterApplied, setFilterApplied] = useState(false);
+  // const [filterApplied, setFilterApplied] = useState(false);
   const handleApplyFilters = () => {
     // bottomSheet.current.close();
-    setFilterApplied(true)
     bottomSheetModalRef.current?.dismiss();
     setTimeout(() => {
       setIsLoading(true);

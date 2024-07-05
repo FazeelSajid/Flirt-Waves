@@ -15,28 +15,34 @@ const CustomHeader = ({
   iconSize,
   leftOnpress,
   rightOnPress,
-  headingColor,
   leftIconColor,
   rightIconColor,
   rightText,
-  rightTextStyle
+  rightTextStyle,
+  headingStyle,
+  leftSvg,
+  rightSvg,
+  
   
 }) => {
   return (
     <View style={styles.container}>
+      { left &&
       <CustomButton
         icon={left}
+        svg={leftSvg}
         iconSize={iconSize}
         iconColor={leftIconColor}
         onPress={leftOnpress}
         style={styles.iconBtn}
-      />
-      <Text style={[styles.heading, headingColor && {color: headingColor}]}>
+      />}
+      <Text style={[styles.heading, headingStyle]}>
         {heading}
       </Text>
       <CustomButton
         icon={right}
-        size={iconSize}
+        svg={rightSvg}
+        iconSize={iconSize}
         iconColor={rightIconColor}
         onPress={rightOnPress}
         text={rightText}
@@ -54,12 +60,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: hp(2.5),
+    // backgroundColor:'green'
   },
   heading: {
     color: COLORS.bgColor,
     fontSize: hp(3),
     fontWeight: '600',
-    lineHeight: wp(6),
+    // lineHeight: wp(6),
     fontFamily: fonts.Regular
   },
   iconBtn: {},

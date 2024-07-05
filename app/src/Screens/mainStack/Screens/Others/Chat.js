@@ -21,10 +21,11 @@ import CustomButton from '../../../../components/CustomButton';
 import {fonts} from '../../../../../config/Fonts';
 import EmojiModal from 'react-native-emoji-modal';
 
-const Chat = ({navigation}) => {
+const Chat = ({navigation, route}) => {
   const [messages, setMessages] = useState([]);
   const [isEmoji, setIsEmoji] = useState(false);
   const [inputText, setInputText] = useState('');
+  const {img } = route.params;
 
   const handleSend = () => {
     if (inputText.trim().length > 0) {
@@ -115,7 +116,7 @@ const Chat = ({navigation}) => {
     return (
       <View style={styles.inputContainer}>
         <TxtInput
-          style={{flexGrow: 1}}
+          style={{flexGrow: 1,}}
           rightIcon={isEmoji ? 'baby-face-outline' : 'keyboard'}
           rightIconSize={wp(8)}
           rightIconColor={COLORS.darkGrayColor}
@@ -152,7 +153,7 @@ const Chat = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ChatHeader left={'chevron-left'} iconSize={35} img={imgs.user3} leftOnpress={()=> navigation.goBack()} rightOnPress={()=>navigation.navigate('audioCall')} />
+      <ChatHeader left={'chevron-left'} iconSize={35} img={img} leftOnpress={()=> navigation.goBack()} rightOnPress={()=>navigation.navigate('audioCall')} />
       <GiftedChat
         messages={messages}
         onSend={newMessages =>
@@ -238,5 +239,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    // height: wp(10)
   },
 });

@@ -39,7 +39,10 @@ const TxtInput = ({
   placeholderTextColor,
   rightIconPress,
   isEmoji,
-  containerStyle
+  containerStyle,
+  svg,
+  rightIconFocusColor,
+  selectableColor,
 }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(!secureTextEntry);
 
@@ -56,15 +59,16 @@ const TxtInput = ({
         {rightIcon &&  <CustomButton
           icon={rightIcon}
           iconSize={rightIconSize}
-          iconColor={rightIconColor}
+          iconColor={isfocused ? rightIconFocusColor :rightIconColor}
           onPress={rightIconPress}
           style={styles.iconBtn}
         />  }
+        {svg && svg}
         <TextInput
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor}
           style={[styles.searchInput]}
-          selectionColor={COLORS.primary1}
+          selectionColor={ selectableColor ? selectableColor:  COLORS.primary1}
           keyboardType={keyboardType}
           onFocus={() => onFocus ? onFocus() : setFocused(true)}
           onChangeText={onChangeText}
@@ -106,16 +110,16 @@ const styles = StyleSheet.create({
     // color: COLORS.black,
     fontFamily: fonts.Regular,
     color: COLORS.lightTxtColor,
-    marginLeft: 5,
+    marginLeft: wp(1),
     flex: 1,
   },
   focused: {
     borderColor: COLORS.primary1,
-    borderWidth: 1,
+    borderWidth: wp(0.3),
     // borderBlockEndColor: COLORS.primary1,
   },
   icon: {
-    marginRight: 10,
+    marginRight: wp(2),
   },
   iconBtn: {
     paddingHorizontal: wp(3),
