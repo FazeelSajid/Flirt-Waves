@@ -15,3 +15,12 @@ export const imgsArray = [
   require('./user4.png'),
   require('./user3.png'),
 ];
+
+export const imgsArray2 = [
+  // {img:require('./user1.png '), name: 'Olivia'},
+  {img:require('./user4.png'), name: 'Olivia'},
+  {img:require('./user2.png'), name: 'Olivia'},
+  {img:require('./user3.png'), name: 'Olivia'},
+  {img:require('./user4.png'), name: 'Olivia'},
+  {img:require('./user3.png'), name: 'Olivia'},
+];

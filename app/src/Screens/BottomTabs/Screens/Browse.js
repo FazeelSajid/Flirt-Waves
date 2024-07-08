@@ -143,6 +143,7 @@ const data = [
           <FlatList
             horizontal
             data={item}
+            // style={{marginBottom: wp(10)}}
             renderItem={({ item }) => (
               <TouchableOpacity activeOpacity={0.7} style={styles.optionContainer} onPress={handlePress} >
                 <Image source={item.img} style={styles.optionImage} />
@@ -171,6 +172,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white,
     paddingTop: hp('5%'),
+    // marginBottom: hp('5%'),
+    paddingBottom: hp('15%'),
     paddingHorizontal: wp('6%'),
   },
   heading: {
@@ -222,6 +225,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: COLORS.blackTxtColor,
     width: wp(28),
+    // height: hp(5),
     fontFamily:fonts.Regular
 
   },

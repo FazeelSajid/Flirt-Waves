@@ -14,7 +14,7 @@ const ContinueWith = ({text, icon, bgColor, textStyle, onPress, containerStyle,k
       style={[
         styles.container,
         containerStyle,
-        icon ? {paddingVertical: wp('1.5%')} : '',
+        // icon ? {paddingVertical: wp('1.5%')} : '',
       ]}
       onPress={onPress}
       >

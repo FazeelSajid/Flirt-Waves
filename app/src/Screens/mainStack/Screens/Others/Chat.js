@@ -25,7 +25,7 @@ const Chat = ({navigation, route}) => {
   const [messages, setMessages] = useState([]);
   const [isEmoji, setIsEmoji] = useState(false);
   const [inputText, setInputText] = useState('');
-  const {img } = route.params;
+  const img  = route.params?.img
 
   const handleSend = () => {
     if (inputText.trim().length > 0) {

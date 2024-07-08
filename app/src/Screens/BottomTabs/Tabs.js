@@ -54,7 +54,7 @@ const Tabs = () => {
         }
         return <Icon name={iconName} size={25} color={color}  />
     }
-    }}} initialRouteName='Favorite'
+    }}} initialRouteName='Home'
     >
       <Tab.Screen name='Home' component={Home} />
       <Tab.Screen name='Browse' component={Browse} />

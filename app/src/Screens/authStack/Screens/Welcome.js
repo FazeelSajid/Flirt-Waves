@@ -54,7 +54,7 @@ const Welcome = ({navigation}) => {
           <ContinueWith
             text={'Continue with Email'}
             onPress={handlePress}
-            containerStyle={styles.continueWith}
+            containerStyle={[styles.continueWith, {paddingVertical: wp('4')}]}
           />
           <ContinueWith
             text={'Continue with Google'}
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   continueWith: {
     backgroundColor: COLORS.white,
     marginTop: wp('5%'),
-    paddingVertical: wp('4%'),
+    paddingVertical: wp('1.5%'),
 
   },
   Problem: {

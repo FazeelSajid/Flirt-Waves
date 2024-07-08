@@ -20,7 +20,7 @@ const PopUpModal = ({
   btn1Txt,
   btn2Txt,
   svg,
-  childern,
+  children,
   btn2TxtStyle,
   btn1Press,
   btn2Press,
@@ -28,7 +28,8 @@ const PopUpModal = ({
   btn2style,
   row,
   btn1TxtStyle,
-  btnsContainer
+  btnsContainer,
+
 }) => {
   return (
     <Modal
@@ -40,10 +41,11 @@ const PopUpModal = ({
         <StatusBar backgroundColor={'rgba(0, 0, 0, 0.5)'}/>
       {/* {childern} */}
       <View style={styles.modalOverlay}>
-        <View style={styles.modalContainer}>
+        <View style={[styles.modalContainer, !children && {alignItems:'center'}]}>
           {svg}
           {heading && <Text style={styles.heading}>{heading}</Text>}
-          <Text style={textStyle}>{message}</Text>
+          {message && <Text style={textStyle}>{message}</Text>}
+          {children}
           <View style={btnsContainer} >
           <CustomButton
             text={btn1Txt}
@@ -79,14 +81,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp('3%'),
   },
   modalContainer: {
-    width: wp('85%'),
+    width: wp('80%'),
     backgroundColor: COLORS.white,
     borderRadius: wp('6%'),
     padding: wp('4%'),
-    alignItems: 'center',
+    // paddingHorizontal: wp(6),
+    // alignItems: '',
     borderWidth: 1,
     borderColor: COLORS.white,
     marginHorizontal: wp('3%'),
+    justifyContent: 'center',
   },
   iconContainer: {
     marginBottom: hp('2%'),
@@ -121,6 +125,7 @@ const styles = StyleSheet.create({
     marginTop: hp('3%'),
     color: COLORS.blackTxtColor,
     fontFamily: fonts.Regular,
+    textAlign: 'center'
     // paddingHorizontal: wp('3%'),
     // lineHeight: wp('7%'),
   },

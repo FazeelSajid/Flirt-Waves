@@ -55,8 +55,8 @@ const AudioCall = ({name = 'Olivia', timmer = '01:00:48 ', navigation}) => {
           <CustomButton
             svg={<Call width={wp(10)} height={wp(10)} />}
             containerStyle={[styles.iconContainer, {borderRadius: wp(10)}]}
-            onPress={() => navigation.navigate('chat')}
-            pressedRadius={wp('5%')}
+            onPress={() => navigation.goBack()}
+            pressedRadius={wp('10%')}
           />
         </View>
 
@@ -94,7 +94,7 @@ const AudioCall = ({name = 'Olivia', timmer = '01:00:48 ', navigation}) => {
                       styles.iconContainer,
                       {borderRadius: wp(10)},
                     ]}
-                    onPress={() => navigation.navigate('chat')}
+                    onPress={() => navigation.goBack()}
                     pressedRadius={wp('5%')}
                   />
                 </View>

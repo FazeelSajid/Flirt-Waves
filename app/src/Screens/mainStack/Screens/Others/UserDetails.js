@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Modal,
   StatusBar,
+  FlatList,
 } from 'react-native';
 import BottomSheet, {
   BottomSheetModal,
@@ -57,7 +58,57 @@ const UserDetails = ({
   const [isFavourite, setIsfavorite] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [FavoritesModal, setFavoritesModal] = useState(false);
+  const tagsData = [
+    {
+      id: '1',
+      icon: <Love width={wp(6)} height={wp(6)} />,
+      text: 'Looking For Relationship',
+    },
+    {
+      id: '2',
+      icon: <Fitness width={wp(6)} height={wp(6)} />,
+      text: 'Occasional Exercise',
+    },
+    {
+      id: '3',
+      icon: <Chef width={wp(6)} height={wp(6)} />,
+      text: 'I’m an excellent chef',
+    },
+    {
+      id: '4',
+      icon: <Mountain width={wp(6)} height={wp(6)} />,
+      text: 'Hiking & backpack',
+    },
+    {
+      id: '5',
+      icon: <Moon width={wp(6)} height={wp(6)} />,
+      text: 'I’m in bed by midnight',
+    },
+    {
+      id: '6',
+      icon: <Smoking width={wp(6)} height={wp(6)} />,
+      text: 'Zero Tolerance',
+    },
+    {
+      id: '7',
+      icon: <Kid width={wp(6)} height={wp(6)} />,
+      text: 'Thanks but no thanks',
+    },
+    {
+      id: '8',
+      icon: <Eating width={wp(6)} height={wp(6)} />,
+      text: 'A little bit of everything',
+    },
+  ];
 
+  const renderItem = ({item}) => (
+    <ContinueWith
+      icon={item.icon}
+      text={item.text}
+      containerStyle={styles.tag}
+      textStyle={styles.tagTxt}
+    />
+  );
   const handleFavorite = id => {
     // const id = id
     // setIsfavorite(!isFavourite);
@@ -96,6 +147,11 @@ const UserDetails = ({
   // renders
   return (
     <BottomSheetModalProvider>
+      <StatusBar
+        translucent={true}
+        backgroundColor="transparent"
+        barStyle="light-content"
+      />
       <View style={styles.container}>
         <PopUpModal
           svg={<Warning width={wp(20)} height={wp(20)} />}
@@ -187,7 +243,15 @@ const UserDetails = ({
               </View>
             </View>
             <View style={styles.tagsContainer}>
-              <ContinueWith
+              <FlatList
+                data={tagsData}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                numColumns={2}
+                columnWrapperStyle={styles.row}
+                contentContainerStyle={styles.list}
+              />
+              {/* <ContinueWith
                 icon={<Love width={wp(6)} height={wp(6)} />}
                 text={'Looking For Relationship'}
                 containerStyle={styles.tag}
@@ -199,8 +263,6 @@ const UserDetails = ({
                 containerStyle={styles.tag}
                 textStyle={styles.tagTxt}
               />
-              {/* </View> */}
-              {/* <View style={styles.tagsContainer}> */}
               <ContinueWith
                 icon={<Chef width={wp(6)} height={wp(6)} />}
                 text={'I’m a excellent chef '}
@@ -213,8 +275,6 @@ const UserDetails = ({
                 containerStyle={styles.tag}
                 textStyle={styles.tagTxt}
               />
-              {/* </View> */}
-              {/* <View style={styles.tagsContainer}> */}
               <ContinueWith
                 icon={<Moon width={wp(6)} height={wp(6)} />}
                 text={'I’m in bed by midnight'}
@@ -227,8 +287,6 @@ const UserDetails = ({
                 containerStyle={styles.tag}
                 textStyle={styles.tagTxt}
               />
-              {/* </View> */}
-              {/* <View style={styles.tagsContainer}> */}
               <ContinueWith
                 icon={<Kid width={wp(6)} height={wp(6)} />}
                 text={'Thanks but no thanks'}
@@ -240,7 +298,7 @@ const UserDetails = ({
                 text={'A little bit of everything'}
                 containerStyle={styles.tag}
                 textStyle={styles.tagTxt}
-              />
+              /> */}
             </View>
 
             <Text style={styles.nameTxt}>Gallery</Text>
@@ -365,10 +423,11 @@ const styles = StyleSheet.create({
   profileImg: {
     // flex:1,
     width: wp('100%'),
-    height: wp('100%'),
+    height: hp('54.5%'),
     paddingVertical: wp(10),
     paddingHorizontal: wp(5),
     justifyContent: 'space-between',
+    // resizeMode: 'center'
   },
   section1: {
     flexDirection: 'row',
