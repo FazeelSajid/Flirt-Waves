@@ -20,7 +20,7 @@ const CustomButton = ({
   pressedRadius,
   svg,
   img,
-  imgStyle
+  imgStyle,
 }) => {
   return (
     <Pressable
@@ -37,19 +37,21 @@ const CustomButton = ({
       ]}>
       {/* {svg && svg} */}
       {icon ? (
-  <>
-    <Icon name={icon} size={iconSize} color={iconColor} />
-    {text && <Text style={[textStyle, txtColor]}>{text}</Text>}
-  </>
-) : text ? (
-  <Text style={[textStyle, txtColor]}>{text}</Text>
-) : svg ? (
- svg
-): (
-  <Image source={img} style={imgStyle} />
-  
-)}
-
+        <>
+          <Icon name={icon} size={iconSize} color={iconColor} />
+          {text && <Text style={[textStyle, txtColor]}>{text}</Text>}
+        </>
+      ) : text && !svg && !icon  ? (
+        <Text style={[textStyle, txtColor]}>{text}</Text>
+      ) : svg ? (
+        
+        <View style={{flexDirection: 'row', alignItems: 'center'}} >
+          {svg}
+          {text && <Text style={[textStyle, txtColor]}>{text}</Text>}
+        </View>
+      ) : (
+        img && <Image source={img} style={imgStyle} />
+      )}
     </Pressable>
   );
 };
@@ -60,6 +62,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     borderRadius: wp('3%'),
+    paddingHorizontal: wp(2)
     // padding: 8,
     // borderRadius: 4
   },

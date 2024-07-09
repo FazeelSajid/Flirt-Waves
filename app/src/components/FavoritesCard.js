@@ -31,13 +31,14 @@ const FavoritesCard = ({
           colors={['#00000090', 'rgba(50, 29, 58, 0)']}
           style={styles.gradientOverlay}>
           <View style={styles.txtNiconContainer}>
-            <CustomButton
+           { favIconPress && <CustomButton
               onPress={favIconPress}
               icon={isFavourite ? 'cards-heart' : 'cards-heart-outline'}
               iconSize={wp(6)}
               iconColor={COLORS.primary1}
               pressedRadius={wp('5%')}
-            />
+            />}
+            
           </View>
           <View>
             <View style={styles.infoContainer}>
@@ -74,7 +75,7 @@ export default FavoritesCard;
 
 const styles = StyleSheet.create({
   imgWrapper: {
-    height: wp(47),
+    height: wp(50),
     width: wp(44),
     justifyContent: 'center',
     alignItems: 'center',
@@ -84,9 +85,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   img: {
-    height: wp(46),
+    height: wp(50),
     width: wp(40),
-    resizeMode: 'center'
+    resizeMode: 'contain'
   },
   gradientOverlay: {
     ...StyleSheet.absoluteFillObject,

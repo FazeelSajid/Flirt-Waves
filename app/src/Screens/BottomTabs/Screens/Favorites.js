@@ -65,15 +65,15 @@ const Favorites = ({navigation}) => {
           row={true}
           btn1Txt={'Cancel'}
           btn1style={{backgroundColor: '#F5BF0333'}}
-          btn1TxtStyle={{color: COLORS.primary1}}
+          btn1TxtStyle={{fontSize: wp(3.5),color: COLORS.primary1}}
           btn2Txt={'Yes, Remove'}
           btnsContainer={{
             flexDirection: 'row',
-            paddingHorizontal: wp(20),
+            paddingHorizontal: wp(19),
             marginTop: wp(8),
           }}
           btn2style={{backgroundColor: COLORS.primary1, marginLeft: wp(4)}}
-          btn2TxtStyle={{fontSize: wp(4)}}
+          btn2TxtStyle={{fontSize: wp(3.5)}}
           btn1Press={() => setFavoritesModal(false)}
           btn2Press={() => {
             setIsfavorite(false);
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   dropdown: {
     position: 'absolute',
     paddingHorizontal: wp(3),
-    top: hp('10.7%'),
+    top: hp('2%'),
     left: 0,
     right: 0,
     backgroundColor: COLORS.white,
