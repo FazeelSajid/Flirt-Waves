@@ -1,4 +1,10 @@
-import {KeyboardAvoidingView, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import {COLORS} from '../../../../config/COLORS';
 import {
@@ -13,6 +19,7 @@ import * as Yup from 'yup';
 import CustomButton from '../../../components/CustomButton';
 import VerificationInput from '../../../components/VerificationInput';
 import PopUp from '../../../components/PopUp';
+import useAuth from '../../../redux/useAuth';
 
 const emailValidationSchema = Yup.object().shape({
   email: Yup.string()
@@ -32,29 +39,99 @@ const resetValidationSchema = Yup.object().shape({
 const ForgetPassword = ({route, navigation}) => {
   const {screen} = route.params;
   const [verificationCode, setVerificationCode] = useState('');
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [resetPassSuccess, setResetPassSuccess] = useState(false);
+  const [errorPopUp, setErrorPopUp] = useState(false);
+  const [otpPopUp, setOtpPopUp] = useState(false);
+  const [wrongOtpPopUp, setWrongOtpPopUp] = useState(false);
+
+  const {forgetPass, forgetPassState, resetPass, resetPassState} = useAuth();
 
   const handleVerificationCodeChange = code => {
     setVerificationCode(code);
+
+    // console.log(verificationCode);
+  };
+
+  const emailCallBack = status => {
+    if (status === 'succeeded') {
+      setOtpPopUp(true);
+      setTimeout(() => {
+        setOtpPopUp(false);
+        navigation.replace('forgetPass', {screen: 'verification'});
+      }, 4000);
+    } else if (status === 'failed') {
+      setErrorPopUp(true);
+      setTimeout(() => {
+        setErrorPopUp(false);
+      }, 3000);
+    }
+  };
+  const resetPassCallBack = status => {
+    if (status === 'succeeded') {
+      setResetPassSuccess(true);
+      setTimeout(() => {
+        setResetPassSuccess(false);
+        navigation.navigate('signin');
+      }, 4000);
+    }
+  };
+
+  const handleEmailSubmit = values => {
+    forgetPass(values, emailCallBack);
   };
 
   const handleResetSubmit = values => {
-    console.log(values);
-    setShowSuccess(true);
-    setTimeout(() => {
-      setShowSuccess(false);
-      navigation.navigate('signin');
-    }, 3000); // 3 seconds delay
+    // console.log(values);
+    resetPass(values, resetPassCallBack);
+    // console.log(resetPassState, 'resetPass screen')
   };
+  const otp = forgetPassState.data?.otp;
+  const userEmail = forgetPassState.data?.userID?.email;
+  console.log(otp);
+  // console.log(forgetPassState);
+  // console.log(userEmail);
+  // console.log(forgetPassState, 'forgetPass');
 
   return (
     <KeyboardAvoidingView style={{flex: 1, backgroundColor: COLORS.primary2}}>
-      <ScrollView showsVerticalScrollIndicator={false}  style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+        {otpPopUp && (
+          <PopUp
+            color={'#04C200'}
+            heading={'Success'}
+            message={forgetPassState.success}
+          />
+        )}
+        {errorPopUp && (
+          <PopUp
+            color={'red'}
+            heading={'Failed'}
+            message={forgetPassState.error}
+          />
+        )}
+        {wrongOtpPopUp && (
+          <PopUp
+            color={'red'}
+            heading={'Failed'}
+            message={'Incorrect Otp Code'}
+          />
+        )}
+        {resetPassSuccess && (
+          <PopUp
+            color={'#04C200'}
+            heading={'Success'}
+            message={resetPassState.success}
+          />
+        )}
         <CustomHeader
           left={'chevron-left'}
-          iconSize={wp('6%')}
+          iconSize={wp('10%')}
           leftIconColor={COLORS.blackTxtColor}
-          leftOnpress={() => navigation.goBack()}
+          leftOnpress={() =>
+            screen === 'verification'
+              ? navigation.navigate('forgetPass', {screen: 'forget'})
+              : navigation.goBack()
+          }
         />
 
         <Text style={styles.heading}>
@@ -67,12 +144,9 @@ const ForgetPassword = ({route, navigation}) => {
 
         {screen === 'forget' ? (
           <Formik
-            initialValues={{email: ''}}
+            initialValues={{email: 'fazeel.sajid890@gmail.com'}}
             validationSchema={emailValidationSchema}
-            onSubmit={values => {
-              console.log(values);
-              navigation.replace('forgetPass', {screen: 'verification'});
-            }}>
+            onSubmit={handleEmailSubmit}>
             {({
               handleChange,
               handleBlur,
@@ -104,7 +178,6 @@ const ForgetPassword = ({route, navigation}) => {
                   textStyle={[styles.btnText, {color: COLORS.blackTxtColor}]}
                   onPress={handleSubmit}
                   pressedRadius={wp(3)}
-
                 />
               </>
             )}
@@ -124,14 +197,26 @@ const ForgetPassword = ({route, navigation}) => {
               containerStyle={[styles.btn, {backgroundColor: COLORS.primary1}]}
               text={'Verify'}
               textStyle={[styles.btnText, {color: COLORS.blackTxtColor}]}
-              onPress={() => navigation.replace('forgetPass', {screen: 'reset'})}
+              onPress={() => {
+                if (verificationCode === otp) {
+                  navigation.replace('forgetPass', {screen: 'reset'});
+                } else {
+                  setWrongOtpPopUp(true);
+                  setTimeout(() => {
+                    setWrongOtpPopUp(false);
+                  }, 4000);
+                }
+              }}
               pressedRadius={wp(3)}
-
             />
           </>
         ) : (
           <Formik
-            initialValues={{password: '', confirmPassword: ''}}
+            initialValues={{
+              email: userEmail,
+              password: '',
+              confirmPassword: '',
+            }}
             validationSchema={resetValidationSchema}
             onSubmit={handleResetSubmit}>
             {({
@@ -165,7 +250,9 @@ const ForgetPassword = ({route, navigation}) => {
                     error={
                       touched.confirmPassword &&
                       errors.confirmPassword && (
-                        <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+                        <Text style={styles.errorText}>
+                          {errors.confirmPassword}
+                        </Text>
                       )
                     }
                   />
@@ -180,22 +267,12 @@ const ForgetPassword = ({route, navigation}) => {
                   textStyle={[styles.btnText, {color: COLORS.blackTxtColor}]}
                   onPress={handleSubmit}
                   pressedRadius={wp(3)}
-
                 />
               </>
             )}
           </Formik>
         )}
-
-      
       </ScrollView>
-      {showSuccess && (
-          <PopUp
-          color={'#04C200'}
-          heading={'Success'}
-          message={'Password reset successfully!'}
-        />
-        )}
     </KeyboardAvoidingView>
   );
 };
@@ -205,7 +282,6 @@ export default ForgetPassword;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: COLORS.primary2,
     paddingHorizontal: wp('6%'),
     paddingTop: hp('4%'),
   },
@@ -218,7 +294,6 @@ const styles = StyleSheet.create({
   },
   btn: {
     paddingVertical: wp('3%'),
-    
   },
   btnText: {
     fontFamily: fonts.Regular,
@@ -237,9 +312,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.primary1,
     borderWidth: 2,
   },
-  successContainer: {
-   
-  },
+  successContainer: {},
   successText: {
     fontSize: wp('4%'),
     color: '#155724',

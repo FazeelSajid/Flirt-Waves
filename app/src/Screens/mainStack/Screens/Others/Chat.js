@@ -153,7 +153,7 @@ const Chat = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ChatHeader left={'chevron-left'} iconSize={35} img={img} leftOnpress={()=> navigation.goBack()} rightOnPress={()=>navigation.navigate('audioCall')} />
+      <ChatHeader left={'chevron-left'} iconSize={35} leftIconColor={COLORS.blackTxtColor} img={img} leftOnpress={()=> navigation.goBack()} rightOnPress={()=>navigation.navigate('audioCall')} />
       <GiftedChat
         messages={messages}
         onSend={newMessages =>

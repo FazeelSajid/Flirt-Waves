@@ -238,13 +238,15 @@ const styles = StyleSheet.create({
     // backgroundColor: 'green'
   },
   btnWrapper: {
-    alignItems: 'center',
+    // alignItems: 'center',
   },
   btnLabel: {
     fontSize: wp(3),
     fontFamily: fonts.Regular,
     textAlign: 'center',
     color: COLORS.blackTxtColor,
-    width: wp(20)
+    width: wp(20),
+    paddingTop: wp(3)
+
   },
 });

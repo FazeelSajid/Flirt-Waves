@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
         // paddingTop: widthPercentageToDP('2%'),
         paddingHorizontal: widthPercentageToDP('4%'),
         paddingVertical: widthPercentageToDP('4%'),
+        
       },
       
 })

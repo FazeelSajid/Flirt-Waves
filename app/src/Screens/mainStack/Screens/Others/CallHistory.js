@@ -34,7 +34,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -42,7 +42,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -50,7 +50,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -58,7 +58,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -66,7 +66,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -74,7 +74,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -82,7 +82,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -90,7 +90,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -98,7 +98,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -106,7 +106,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -114,7 +114,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -122,7 +122,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -130,7 +130,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -138,7 +138,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -146,7 +146,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -154,7 +154,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -162,7 +162,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -170,7 +170,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />
@@ -178,7 +178,7 @@ const CallHistory = ({navigation}) => {
         name={'Sahara Ardia'}
         callType={'Voice call'}
         duration={'00:30:45'}
-        phoneOnpress={() => console.log('phone')}
+        phoneOnpress={() => navigation.navigate('audioCall')}
         videoOnpress={() => console.log('video')}
         img={imgs.user1}
       />

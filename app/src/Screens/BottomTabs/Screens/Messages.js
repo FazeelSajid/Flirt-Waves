@@ -103,7 +103,7 @@ const Messages = ({navigation}) => {
           <Text style={[styles.Heading, {color: COLORS.blackTxtColor}]}>
             My Flames
           </Text>
-          <CustomButton text={'See All'} textStyle={{color: COLORS.primary1}} />
+          <CustomButton text={'See All'} textStyle={{color: COLORS.primary1}} onPress={()=> navigation.navigate('crushes')} />
         </View>
 
         <View>
@@ -289,7 +289,7 @@ const Messages = ({navigation}) => {
             <View style={{marginLeft: wp(3)}}>
               <Text style={styles.itemText}>Rossie</Text>
               <Text style={[styles.itemText, {color: COLORS.darkGrayColor}]}>
-                Do you hae time in sunday?
+                Do you have time in sunday?
               </Text>
             </View>
           </View>
@@ -374,7 +374,7 @@ const Messages = ({navigation}) => {
       />
 
       <BottomSheet isVisible={languageModal} onClose={()=> setlanguageModal(false)}   >
-        <ChangeChatLanguage/>
+        <ChangeChatLanguage onClose={()=> setlanguageModal(false)} />
       </BottomSheet>
     </ScrollView>
   );

@@ -23,7 +23,7 @@ export default PopUp
 const styles = StyleSheet.create({
     popUp: {
       position: 'absolute',
-      top: hp('5%'),
+      top: hp('3.3%'),
       left: wp('5%'),
       right: wp('5%'),
       // backgroundColor: '#d4edda',
