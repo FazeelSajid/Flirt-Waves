@@ -246,7 +246,7 @@ const MyProfile = ({
           {instructions.map((instruction, index) => (
              <View style={{flexDirection: 'row', marginBottom: wp(2.8), marginLeft: wp(1), alignItems: 'center', justifyContent: 'flex-start' }} key={index} >
              <Text style={{ fontSize: wp(4.5) , color: COLORS.primary1 }}>{`\u25CF`}</Text>
-             <Text key={index} style={{fontFamily: fonts.Regular, fontSize: wp(3), marginLeft: wp(3)}}>
+             <Text key={index} style={{fontFamily: fonts.Regular, fontSize: wp(3), marginLeft: wp(3), color: COLORS.blackTxtColor }} >
                    {instruction}
                </Text>
              </View>

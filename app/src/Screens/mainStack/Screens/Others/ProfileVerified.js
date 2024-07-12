@@ -72,6 +72,7 @@ const ProfileVerified = ({navigation}) => {
               fontFamily: fonts.Regular,
               marginTop: wp(4),
               fontSize: wp(3.5),
+              color: COLORS.darkGrayColor
             }}>
             Congratulations! Your profile is now verified with a verification
             badge. Enjoy all the platform's features and benefits with
@@ -115,5 +116,6 @@ const styles = StyleSheet.create({
   message: {
     fontFamily: fonts.Regular,
     marginTop: wp(4),
+    color: COLORS.darkGrayColor,
   },
 });

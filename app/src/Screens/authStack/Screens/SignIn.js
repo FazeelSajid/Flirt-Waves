@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Logos from '../../../components/subComp/Logos';
 import svg from '../../../assets/svgs/Svg';
 import Facebook from '../../../assets/svgs/facebook.svg';
@@ -17,6 +17,8 @@ import CustomButton from '../../../components/CustomButton';
 import ContinueWith from '../../../components/ContinueWith';
 import Apple from '../../../assets/svgs/apple.svg';
 import Google from '../../../assets/svgs/google.svg';
+import useAuth from '../../../redux/useAuth';
+import PopUp from '../../../components/PopUp';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -28,22 +30,54 @@ const validationSchema = Yup.object().shape({
 });
 
 const SignIn = ({navigation}) => {
+
+  const [successPopUp, setSuccessPopUp] = useState(false);
+  const [errorPopUp, setErrorPopUp] = useState(false)
+  const {signinState, signinUser} = useAuth();
+
+
+  const callback = (status, message) => {
+    if (status === 'succeeded') {
+      setSuccessPopUp(true);
+      setTimeout(() => {
+        setSuccessPopUp(false);
+        navigation.navigate('mainStack');
+      }, 4000); // 10 seconds delay
+    } else if (status === 'failed') {
+      setErrorPopUp(true);
+      setTimeout(() => {
+        setErrorPopUp(false);
+      }, 3000); // 3 seconds delay
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
+      { successPopUp &&  <PopUp
+        color={'#04C200'}
+        heading={'Success'}
+        message={signinState.success}
+      />}
+        { errorPopUp &&  <PopUp
+        color={'red'}
+        heading={'Failed'}
+        message={signinState.error}
+      />}
       <CustomHeader
         left={'chevron-left'}
-        iconSize={wp('6%')}
+        iconSize={wp('10%')}
         leftIconColor={COLORS.blackTxtColor}
         leftOnpress={() => navigation.goBack()}
       />
       <Logos />
       <Text style={styles.heading}>Sign In</Text>
       <Formik
-        initialValues={{email: '', password: ''}}
+        initialValues={{email: 'fazeel@gmail.com', password: 'fazeel'}}
         validationSchema={validationSchema}
         onSubmit={values => {
-          console.log(values);
-          navigation.navigate('QA');
+          // console.log(values);
+          // navigation.navigate('QA');
+          signinUser(values, callback);
         }}>
         {({
           handleChange,
@@ -175,7 +209,7 @@ const styles = StyleSheet.create({
   continueWith: {
     backgroundColor: COLORS.white,
     marginTop: wp('5%'),
-    paddingVertical: wp('4%'),
+    paddingVertical: wp('2%'),
 
   },
   alreadyContainer: {

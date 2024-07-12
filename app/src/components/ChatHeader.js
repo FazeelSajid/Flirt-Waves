@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.SemiBold,
   },
   status: {
-    color: COLORS.bgColor,
+    color: COLORS.darkGrayColor,
     fontSize: hp(1.7),
     fontFamily: fonts.Regular,
   },

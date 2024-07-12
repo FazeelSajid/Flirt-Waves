@@ -1,5 +1,11 @@
-import {StyleSheet, Text, View, KeyboardAvoidingView, ScrollView} from 'react-native';
-import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  KeyboardAvoidingView,
+  ScrollView,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import Logos from '../../../components/subComp/Logos';
 import svg from '../../../assets/svgs/Svg';
 import Facebook from '../../../assets/svgs/facebook.svg';
@@ -17,6 +23,8 @@ import CustomButton from '../../../components/CustomButton';
 import ContinueWith from '../../../components/ContinueWith';
 import Apple from '../../../assets/svgs/apple.svg';
 import Google from '../../../assets/svgs/google.svg';
+import useAuth from '../../../redux/useAuth';
+import PopUp from '../../../components/PopUp';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -31,114 +39,154 @@ const validationSchema = Yup.object().shape({
 });
 
 const SignUp = ({navigation}) => {
+  const {signupUser, signupState} = useAuth();
+  const [successPopUp, setSuccessPopUp] = useState(false);
+  const [errorPopUp, setErrorPopUp] = useState(false)
+
+  
+  const callback = (status, message) => {
+    if (status === 'succeeded') {
+      setSuccessPopUp(true);
+      setTimeout(() => {
+        setSuccessPopUp(false);
+        navigation.navigate('QA');
+      }, 4000); // 10 seconds delay
+    } else if (status === 'failed') {
+      setErrorPopUp(true);
+      setTimeout(() => {
+        setErrorPopUp(false);
+      }, 3000); // 3 seconds delay
+    }
+  };
+
   return (
     // <KeyboardAvoidingView style={{flex: 1}} >
 
     <ScrollView style={styles.container}>
+        { successPopUp &&  <PopUp
+        color={'#04C200'}
+        heading={'Success'}
+        message={signupState.success}
+      />}
+        { errorPopUp &&  <PopUp
+        color={'red'}
+        heading={'Failed'}
+        message={signupState.error}
+      />}
       <CustomHeader
         left={'chevron-left'}
         iconSize={wp('10%')}
         leftIconColor={COLORS.blackTxtColor}
         leftOnpress={() => navigation.goBack()}
       />
+
+  
+
       <Logos />
       <Text style={styles.heading}>Sign Up</Text>
-      <View style={{flexGrow: 1}} >
+      <View style={{flexGrow: 1}}>
+        <Formik
+          initialValues={{
+            email: 'fazeel@gmail.com',
+            password: 'fazeel',
+            confirmPassword: 'fazeel',
+          }}
+          validationSchema={validationSchema}
+          onSubmit={async values => {
+            // console.log(values);
+            signupUser(values, callback);
+            // navigation.navigate('QA');
 
-      <Formik
-        initialValues={{email: 'fazeel@gmail.com', password: 'fazeel', confirmPassword: 'fazeel'}}
-        validationSchema={validationSchema}
-        onSubmit={values => {
-          console.log(values);
-          navigation.navigate('QA');
-        }}>
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-        }) => (
-          <View style={styles.inputContainer}>
-            <TxtInput
-              placeholder={'Email Address'}
-              style={{marginBottom: wp('6%')}}
-              value={values.email}
-              onChangeText={handleChange('email')}
-              // onBlur={handleBlur('email')}
-              error={
-                touched.email &&
-                errors.email && (
-                  <Text style={styles.errorText}>{errors.email}</Text>
-                )
-              }
-            />
-
-            <TxtInput
-              placeholder={'Password'}
-              style={{marginBottom: wp('6%')}}
-              value={values.password}
-              onChangeText={handleChange('password')}
-              // onBlur={handleBlur('password')}
-              error={
-                touched.password &&
-                errors.password && (
-                  <Text style={styles.errorText}>{errors.password}</Text>
-                )
-              }
-              secureTextEntry={true}
+            // console.log(signupState, 'SignUp screen');
+          }}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+          }) => (
+            <View style={styles.inputContainer}>
+              <TxtInput
+                placeholder={'Email Address'}
+                style={{marginBottom: wp('6%')}}
+                value={values.email}
+                onChangeText={handleChange('email')}
+                // onBlur={handleBlur('email')}
+                error={
+                  touched.email &&
+                  errors.email && (
+                    <Text style={styles.errorText}>{errors.email}</Text>
+                  )
+                }
               />
 
-            <TxtInput
-              placeholder={'Confirm Password'}
-              style={{marginBottom: wp('6%')}}
-              value={values.confirmPassword}
-              onChangeText={handleChange('confirmPassword')}
-              // onBlur={handleBlur('confirmPassword')}
-              secureTextEntry={true}
-              error={
-                touched.confirmPassword &&
-                errors.confirmPassword && (
-                  <Text style={styles.errorText}>{errors.confirmPassword}</Text>
-                )
-              }
-            />
-
-            <CustomButton
-              containerStyle={[
-                styles.btn,
-                {backgroundColor: COLORS.primary1, marginBottom: wp('5%')},
-              ]}
-              text={'Continue'}
-              textStyle={[styles.btnText, {color: COLORS.blackTxtColor}]}
-              onPress={handleSubmit}
-            pressedRadius={wp(3)}
-
+              <TxtInput
+                placeholder={'Password'}
+                style={{marginBottom: wp('6%')}}
+                value={values.password}
+                onChangeText={handleChange('password')}
+                // onBlur={handleBlur('password')}
+                error={
+                  touched.password &&
+                  errors.password && (
+                    <Text style={styles.errorText}>{errors.password}</Text>
+                  )
+                }
+                secureTextEntry={true}
               />
-          </View>
-        )}
-      </Formik>
-      <ContinueWith
-        text={'Continue with Facebook'}
-        // onPress={handlePress}
-        icon={<Facebook width={wp('5%')} height={hp('5%')} />}
-        containerStyle={styles.continueWith}
-      />
-      <ContinueWith
-        text={'Continue with Google'}
-        // onPress={handlePress}
-        icon={<Google width={wp('5%')} height={hp('5%')} />}
-        containerStyle={styles.continueWith}
-      />
-      {Platform.OS === 'ios' && (
+
+              <TxtInput
+                placeholder={'Confirm Password'}
+                style={{marginBottom: wp('6%')}}
+                value={values.confirmPassword}
+                onChangeText={handleChange('confirmPassword')}
+                // onBlur={handleBlur('confirmPassword')}
+                secureTextEntry={true}
+                error={
+                  touched.confirmPassword &&
+                  errors.confirmPassword && (
+                    <Text style={styles.errorText}>
+                      {errors.confirmPassword}
+                    </Text>
+                  )
+                }
+              />
+
+              <CustomButton
+                containerStyle={[
+                  styles.btn,
+                  {backgroundColor: COLORS.primary1, marginBottom: wp('5%')},
+                ]}
+                text={'Continue'}
+                textStyle={[styles.btnText, {color: COLORS.blackTxtColor}]}
+                onPress={handleSubmit}
+                pressedRadius={wp(3)}
+              />
+            </View>
+          )}
+        </Formik>
         <ContinueWith
-        text={'Continue with Apple'}
-        // onPress={handlePress}
-        icon={<Apple width={wp('5%')} height={hp('5%')} />}
-        containerStyle={styles.continueWith}
+          text={'Continue with Facebook'}
+          // onPress={handlePress}
+          icon={<Facebook width={wp('5%')} height={hp('5%')} />}
+          containerStyle={styles.continueWith}
         />
-      )}
+        <ContinueWith
+          text={'Continue with Google'}
+          // onPress={handlePress}
+          icon={<Google width={wp('5%')} height={hp('5%')} />}
+          containerStyle={styles.continueWith}
+        />
+        {Platform.OS === 'ios' && (
+          <ContinueWith
+            text={'Continue with Apple'}
+            // onPress={handlePress}
+            icon={<Apple width={wp('5%')} height={hp('5%')} />}
+            containerStyle={styles.continueWith}
+          />
+        )}
       </View>
 
       <View style={styles.alreadyContainer}>
@@ -150,7 +198,7 @@ const SignUp = ({navigation}) => {
         />
       </View>
     </ScrollView>
-// </KeyboardAvoidingView>
+    // </KeyboardAvoidingView>
   );
 };
 
@@ -191,7 +239,7 @@ const styles = StyleSheet.create({
   continueWith: {
     backgroundColor: COLORS.white,
     marginTop: wp('5%'),
-    paddingVertical: wp('4%'),
+    paddingVertical: wp('2%'),
   },
   alreadyContainer: {
     marginTop: wp('8%'),

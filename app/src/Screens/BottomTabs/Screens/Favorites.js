@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   dropdown: {
     position: 'absolute',
     paddingHorizontal: wp(3),
-    top: hp('2%'),
+    top: hp('4%'),
     left: 0,
     right: 0,
     backgroundColor: COLORS.white,

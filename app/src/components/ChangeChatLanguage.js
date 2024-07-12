@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import { CheckBox } from 'react-native-elements';
-import { COLORS } from './config/COLORS'; // Adjust the import path as needed
-import { fonts } from './config/Fonts'; // Adjust the import path as needed
+// import CheckBox from '@react-native-community/checkbox';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { COLORS } from '../../config/COLORS';
+import { fonts } from '../../config/Fonts';
+import CheckBox from '@react-native-community/checkbox';
+// import { CheckBoxComponent } from '@react-native-community/checkbox';
 
 const languages = [
   'Afrikaans',
@@ -16,35 +18,41 @@ const languages = [
   // Add more languages as needed
 ];
 
-const ChangeChatLanguage = ({ navigation }) => {
-  const [selectedLanguages, setSelectedLanguages] = useState([]);
+const ChangeChatLanguage = ({ navigation,onClose }) => {
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
 
   const toggleLanguage = (language) => {
-    setSelectedLanguages((prevSelectedLanguages) => {
-      if (prevSelectedLanguages.includes(language)) {
-        return prevSelectedLanguages.filter((item) => item !== language);
-      } else {
-        return [...prevSelectedLanguages, language];
-      }
-    });
+    setSelectedLanguage(language)
+
   };
 
   const renderItem = ({ item }) => (
+
+
     <View style={styles.languageContainer}>
       <Text style={styles.languageText}>{item}</Text>
       <CheckBox
-        checked={selectedLanguages.includes(item)}
-        onPress={() => toggleLanguage(item)}
-        checkedColor={COLORS.primary1}
+      
+        onValueChange={() => toggleLanguage(item)}
+        // boxType='circle'
+      //  disabled={false} 
+      //  value={selectedLanguage}
+       onCheckColor='red'
+       onFillColor={COLORS.primary1}
+       value={selectedLanguage === item}
+       tintColors={{ true :COLORS.primary1, false: COLORS.lightGrayColor }}
+      
+       
       />
     </View>
-  );
+  )
+  ;
 
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.heading}>Change Chat Language</Text>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={onClose}>
           <Text style={styles.closeButton}>X</Text>
         </TouchableOpacity>
       </View>
@@ -53,7 +61,7 @@ const ChangeChatLanguage = ({ navigation }) => {
         renderItem={renderItem}
         keyExtractor={(item) => item}
       />
-      <TouchableOpacity style={styles.changeButton} onPress={() => alert('Language changed!')}>
+      <TouchableOpacity style={styles.changeButton} onPress={onClose}>
         <Text style={styles.changeButtonText}>Change</Text>
       </TouchableOpacity>
     </View>
@@ -64,7 +72,7 @@ export default ChangeChatLanguage;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: COLORS.white,
     padding: wp('5%'),
   },

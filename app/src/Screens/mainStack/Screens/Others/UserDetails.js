@@ -463,6 +463,8 @@ const styles = StyleSheet.create({
   locationTxt: {
     fontSize: wp(3.4),
     fontFamily: fonts.Regular,
+    color: COLORS.darkGrayColor,
+
   },
   tagsContainer: {
     flexDirection: 'row',

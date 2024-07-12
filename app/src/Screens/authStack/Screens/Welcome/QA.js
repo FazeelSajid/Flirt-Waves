@@ -534,10 +534,11 @@ const QA = ({navigation}) => {
               }}
               message="Add atleast one photo to continue"
               btn1Txt="Ok"
-              btn1style={{backgroundColor: COLORS.primary1}}
+              btn1style={{backgroundColor: COLORS.primary1, flex:1}}
               textStyle={[styles.popStyle, {marginBottom: hp(5), marginTop: hp(2)}]}
               btn2TxtStyle={{color: COLORS.primary1}}
               heading={'Add Photo'}
+              btnsContainer={{flexDirection: 'row'}}
 
             />
           </View>
@@ -550,6 +551,7 @@ const QA = ({navigation}) => {
                 height,
               )})`}</Text>
             </View>
+            <View  style={{alignItems: 'center'}} >
             <MultiSlider
             values={[height]}
             onValuesChange={setHeight}
@@ -581,6 +583,8 @@ const QA = ({navigation}) => {
             }}
             
           />
+            </View>
+            
             {/* <Slider
               style={styles.slider}
               minimumValue={100}
@@ -648,7 +652,9 @@ const QA = ({navigation}) => {
         btn2style={{
           backgroundColor: COLORS.primary2,
           width: '100%',
+          paddingHorizontal: wp(5),
           marginTop: wp(3),
+          // flexGrow:0.3
         }}
         textStyle={styles.popStyle}
         btn2TxtStyle={{color: COLORS.primary1}}
