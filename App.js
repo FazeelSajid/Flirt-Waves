@@ -1,11 +1,12 @@
 import 'react-native-gesture-handler';
 import 'react-native-reanimated';
+import 'react-native-get-random-values';
 import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import AuthStack from './app/src/Screens/authStack/authStack';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import MainStack from './app/src/Screens/mainStack/MainStack';
+// import MainStack from './app/src/Screens/mainStack/MainStack';
 import {Provider} from 'react-redux';
 import store from './app/src/redux/Store';
 

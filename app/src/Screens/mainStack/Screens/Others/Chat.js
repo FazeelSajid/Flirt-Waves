@@ -19,7 +19,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import TxtInput from '../../../../components/TxtInput';
 import CustomButton from '../../../../components/CustomButton';
 import {fonts} from '../../../../../config/Fonts';
-import EmojiModal from 'react-native-emoji-modal';
+// import EmojiModal from 'react-native-emoji-modal';
 
 const Chat = ({navigation, route}) => {
   const [messages, setMessages] = useState([]);
